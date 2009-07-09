@@ -1,0 +1,58 @@
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\newcommand{\plumbing}{Plumbing\xspace}
+
+\newcommand{\GOALS}{\section{Goals}}
+\newcommand{\CODE}{\section{Code}}
+\newcommand{\PATTERNS}{\section{Patterns}}
+\newcommand{\BREAKAGE}{\section{Breakage}}
+\newcommand{\EXPLORATIONS}{\subsection{Explorations}}
+
+\newcommand{\PROCedure}{{\ttfamily\bfseries PROC}edure\xspace}
+\newcommand{\PROC}{{\ttfamily\bfseries PROC}\xspace}
+
+\newcommand{\XXX}{{\em TO BE WRITTEN}\xspace}
+
+\newcommand{\HIGH}{{\code HIGH}\xspace}
+\newcommand{\LOW}{{\code LOW}\xspace}
+
+ \definecolor{Brown}{cmyk}{0,0.81,1,0.60}
+ \definecolor{OliveGreen}{cmyk}{0.64,0,0.95,0.40}
+ \definecolor{CadetBlue}{cmyk}{0.62,0.57,0.23,0}
+ 
+% Definition for typesetting occam source code
+\lstdefinelanguage{occam} 
+{
+	keywords={PROC,PAR,SEQ,WHILE,ALT,CHAN,SIGNAL,LEVEL},
+	sensitive=true,
+	comment=[l]{---},
+	string=[b]",
+	frame=ltrb,
+	framesep=5pt,
+  keywordstyle=\color{OliveGreen}\bfseries,
+  identifierstyle=\color{CadetBlue}\bfseries, 
+  commentstyle=\color{Brown},
+  % stringstyle=\ttfamily,
+  showstringspaces=true
+}
+% Layout of source code in general
+\lstset{xleftmargin=14pt,basicstyle=\small\fontfamily{pcr}\selectfont, captionpos=b,numbers=left,numbersep=10pt,language=occam}
+
+\renewcommand\lstlistingname{Figure}
+
+\newcommand{\mypi}{$\pi$}
+\newcommand{\myPI}{\large$\pi$}
+\newcommand{\occam}{{\fontfamily{phv}\selectfont occam-\myPI}\xspace}
+\newcommand{\occamone}{{\fontfamily{phv}\selectfont occam1}}
+\newcommand{\loccam}{{\fontfamily{phv}\selectfont loccam}}
+%\newcommand{\kroc}{{\fontfamily{phv}\selectfont soccam}}
+\def\kroc{KR{\sffamily o}C\xspace} 
+\newcommand{\tvm}{Transterpreter\xspace}
+\newcommand{\Tvm}{Transterpreter\xspace}
+\newcommand{\code}{\ttfamily}
+
+\newcommand{\tvmurl}{\url{www.transterpreter.org}\xspace}
+\newcommand{\tvmcite}{\cite{transterpreter}}
+
+\newcommand{\strong}{\bfseries}
+
