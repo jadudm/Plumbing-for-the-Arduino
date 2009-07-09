@@ -1,6 +1,14 @@
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
 
+
+ \definecolor{Comment}{cmyk}{0,0.81,1,0.60} % Brown
+ \definecolor{Keyword}{cmyk}{0.64,0,0.95,0.40} % Green
+ %\definecolor{Constant}{cmyk}{0.62,0.57,0.23,0} % Cadet Blue
+\definecolor{Constant}{rgb}{0.9,0.3,0.3} % Cadet Blue
+
 \newcommand{\plumbing}{Plumbing\xspace}
+
+\newcommand{\XXX}{{\em TO BE WRITTEN}\xspace}
 
 \newcommand{\GOALS}{\section{Goals}}
 \newcommand{\CODE}{\section{Code}}
@@ -8,41 +16,38 @@
 \newcommand{\BREAKAGE}{\section{Breakage}}
 \newcommand{\EXPLORATIONS}{\subsection{Explorations}}
 
-\newcommand{\PROCedure}{{\ttfamily\bfseries PROC}edure\xspace}
-\newcommand{\PROC}{{\ttfamily\bfseries PROC}\xspace}
-\newcommand{\PARallel}{{\ttfamily\bfseries PAR}allel\xspace}
-\newcommand{\PAR}{{\ttfamily\bfseries PAR}\xspace}
-
-
 \newcommand{\code}{\ttfamily}
-\newcommand{\constant}{\ttfamily}
+\newcommand{\constant}{\ttfamily\bfseries\color{Constant}}
 \newcommand{\procname}{\ttfamily}
-\newcommand{\keyword}{\ttfamily}
+\newcommand{\keyword}{\ttfamily\bfseries\color{Keyword}}
 
-\newcommand{\XXX}{{\em TO BE WRITTEN}\xspace}
+\newcommand{\PROCedure}{{\keyword PROC}edure\xspace}
+\newcommand{\PROC}{{\keyword PROC}\xspace}
+\newcommand{\PARallel}{{\keyword PAR}allel\xspace}
+\newcommand{\PAR}{{\keyword PAR}\xspace}
+\newcommand{\CHANnel}{{\keyword CHAN}nel\xspace}
+\newcommand{\CHAN}{{\keyword CHAN}\xspace}
 
-\newcommand{\HIGH}{{\code HIGH}\xspace}
-\newcommand{\LOW}{{\code LOW}\xspace}
+\newcommand{\SIGNAL}{{\constant SIGNAL}\xspace}
+\newcommand{\HIGH}{{\constant HIGH}\xspace}
+\newcommand{\LOW}{{\constant LOW}\xspace}
 
 \newcommand{\webnote}[2]{\footnote{See \url{#1}\xspace for more information about #2.}}
 \newcommand{\ohm}{$\tcohm$\xspace}
-
- \definecolor{Brown}{cmyk}{0,0.81,1,0.60}
- \definecolor{OliveGreen}{cmyk}{0.64,0,0.95,0.40}
- \definecolor{CadetBlue}{cmyk}{0.62,0.57,0.23,0}
  
 % Definition for typesetting occam source code
 \lstdefinelanguage{occam} 
 {
 	keywords={PROC,PAR,SEQ,WHILE,ALT,CHAN,SIGNAL,LEVEL},
+	keywordstyle=\color{Keyword}\bfseries,
+	emph={TRUE, FALSE, LOW, HIGH},
+	emphstyle=\color{Constant}\bfseries, 
 	sensitive=true,
 	comment=[l]{---},
 	string=[b]",
 	frame=ltrb,
 	framesep=5pt,
-  keywordstyle=\color{OliveGreen}\bfseries,
-  identifierstyle=\color{CadetBlue}\bfseries, 
-  commentstyle=\color{Brown},
+  commentstyle=\color{Comment},
   % stringstyle=\ttfamily,
   showstringspaces=true
 }
