@@ -26,7 +26,7 @@ On line 2, we can see that a \PROCedure called {\procname blink} is being called
 	blink (13, 500)
 \end{verbatim}
 
-These are called {\em parameters}. Parameters are values that we give to procedures that let them do different things based on the values we provide. For example, the first parameter to the procedure {\procname blink} is the number {\constant 13}. This tells the Arduino which bin it should be turning on and off. Technically, we would say that the pin to which the LED is attached is being driven \HIGH and \LOW. As we explore more of the basics of electronics, you'll come to understand why we say \HIGH and \LOW instead of ``on'' and ``off.''
+These are called {\em parameters}. Parameters are values that we give to procedures that let them do different things based on the values we provide. For example, the first parameter to the procedure {\procname blink} is the number {\constant 13}. This tells the Arduino which bit it should be turning on and off. Technically, we would say that the pin to which the LED is attached is being driven \HIGH and \LOW. As we explore more of the basics of electronics, you'll come to understand why we say \HIGH and \LOW instead of ``on'' and ``off.''
 
 The second parameter is the amount of time that we want to go by between when the LED is turned on and off. You might think that {\constant 500} is a rather large amount of time---until you realize that it is a value in {\em milliseconds}. The prefix {\em milli} means {\em one thousandth}. Therefore, 1000 milliseconds (or 1000ms) equals 1 second. Therefore, half of a second is 500ms, and a tenth of a second is 100ms. 
 
@@ -86,7 +86,7 @@ LEDs are a kind of diode. A diode is a device that only allows electric current 
   \end{center}
 \end{figure}
 
-Because you have to connect it up the right way, some people way ``the long leg of the LED is the negative leg.'' This is true, but if your LED gets mangled, it becomes difficult to tell which leg is which. Instead, look at Figure~\vref{diagram:led-internals}, and find the ``anvil.'' The anvil is the larger of the two bits inside the LED, and it is {\em always} the negative side of the LED, meaning the ``post'' is {\em always} the positive side of the LED.\webnote{http://en.wikipedia.org/wiki/Led}{LEDs}
+Because you have to connect it up the right way, some people say ``the long leg of the LED is the negative leg.'' This is true, but if your LED gets mangled, it becomes difficult to tell which leg is which. Instead, look at Figure~\vref{diagram:led-internals}, and find the ``anvil.'' The anvil is the larger of the two bits inside the LED, and it is {\em always} the negative side of the LED, meaning the ``post'' is {\em always} the positive side of the LED.\webnote{http://en.wikipedia.org/wiki/Led}{LEDs}
 
 Plug your LED into the breadboard so that the positive side is in the same column as your resistor, and the negative side is in a column all by itself.
 
@@ -143,7 +143,7 @@ There are quite a few ways you can break the software in this chapter---even tho
 	\item[Parameters too big]\ \\
 	The parameter for the speed of the LED blink is an integer---a whole number without any decimal parts, if you prefer. Computers can only keep track of numbers that are so big (or small). How big can you make the blink speed? 
 	\item[Blink too fast]\ \\
-	What happens if you make the blink speed too small (eg. zero)?
+	What happens if you make the blink speed too small (e.g.~zero)?
 	\item[Fractional blinking]\ \\
 	What happens if you try and blink the LED every 100.5ms?
 \end{description}
