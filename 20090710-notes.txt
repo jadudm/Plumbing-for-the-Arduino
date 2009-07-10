@@ -1,0 +1,108 @@
+- No Courier. Too light. cmtt?
+- Headings: Helvetica? Palatino? 
+
+More ways to break things:
+- Indent the colon
+- Forgetting VAL in args
+- Using too much RAM (big array)
+- Internal compiler error (indenting the colon)
+
+- When does the user have enough background to make the distinction between programming in "Plumbing" vs. "occam-pi". That is, where do they have the background to make the distinction/enough wherewithal to be comfortable with the fact that actually it is ALL occam-pi, and these are just a few libraries built within that language. (Want to make sure that we aren't telling lies---eg. "The Plumbing Programming Language" is a lie.)
+-- We need to make the distinction (because we ultimately introduce libraries of code), and it may be at that point that we introduce the distinction.
+-- Related: is this an introductory text on programming? How much detail? When? Why?
+-- occam is an old language, funny things in funny ways. <- hint/prep in preface, but not full depth/detail/distinction between language and libraries.
+
+- 1.2 - Use "spaces to structure our programs" vs. "just use spaces." Perhaps a diagram/example or more detail that shows in more detail that the spaces are there.
+-- Repeat this idea (explicit whitespace) in more than one example (in ch1 and ch2) so that we hammer home the (significant) whitespace idea.
+-- When/where to make distinction between significant and insignificant whitespace? (Re: "Reading Code" in "Studying Programming" --- lots of things to read at multiple levels all the time, and some things are important in one place and not in another.)
+-- Spaces are important in occam because your program is wrong if your spacing is wrong.
+-- "just the way it is" regardless of whether they have used Python or not.
+
+-- Footnote 3, Chapter 1: Hard question. Think about it more.
+
+-- Footnote 4, Chapter 1: Better language ("all the procedures"---be more specific/clear). Also, shift it down a bit. (Or, just inline the footnote if it is important enough.)
+
+- Somewhere between chapter 1 and chapter 2 the notion of parallel processes vs. procedures? How to make it make sense? (What language here isn't *wrong*, but is at a higher level of detail.)
+
+- Get rid of "empowered explorers." Idea is good, but language isn't.
+
+- "Keep a notebook of how you break..." odd wording.
+
+- CAPS LOCK: Why are caps important? Haven't said why. Or, just get rid of last sentence.
+
+- First time you say "This is a common error," say that lots of people do this. And, be more explicit in intro of first breakage section that this is something that happens even to experienced developers in the language.
+
+- "We highly recommend a few strategies..." odd phrasing/rewrite.
+
+- Add to list of strategies: "Have a shower"
+
+- Look at list of suggestions from "Studying Programming" and steal as many as seems appropriate---cite text as well. Perhaps get "How to Program It"
+
+- Unplugging the USB while running: on Linux, causes a Kernel Panic on Linux (FTDI error.) Perhaps this is a bad thing to suggest? When plugging back in, may break because a new serial port is assigned... environment specific... need to rethink/rewrite this section.
+
+CHAPTER 2
+- Mention that the comma separates the values in the parameter list should probably should be moved up... not obvious if you're not used to looking at comma-separated lists.
+
+- Perhaps give more examples: PROCs with no args, lots of arguments, etc. (Perhaps point forward to other things?) Or, let the next chapter peel it back. (However, perhaps show heartbeat and blink side-by-side... heartbeat already knows about pin 13 and 500ms.)
+
+2.4 - "instead of the built-in LED" as opposed to "LED on the board"
+
+2.4 - Not all circuits are circular. Perhaps not a good description... almost certainly not.
+
+2.4 - If say +5V/Vcc, then also say 0V/GND
+
+2.4.3 - Need to mention "magic smoke" in this section. Perhaps give Adam a callout box for describing it?
+
+2.4.3 - Resistors "are" barrel-shaped stripy things, not "the"... also, have some pictures. Floatfig pictures of resistors, as well as a picture of the resistor value that we're using. Clearly, need a LaTeX package that draws resistors.
+
+- LED is safe, when backwards, up until some point where it blows up. So, my statement is not generally true in 2.4.4...
+
+- Also, talk about the flat side when finding the negative leg. Also depends on the size of the LED.
+
+- 2.4.4. In LED footnote link, get actual article URL, not redirect.
+
+2.4.4 - Use boxes in drawings for resistors (modern conventions), and make sure they know about both.
+
+2.4.4 - LED breakage -- don't encourage them to flip them around.
+
+Wrong resistor value---10K vs. 470. (Safe to do that.)
+
+- Breakage: They won't SEE the number 14 on their board, because the Arduino has no notion (it is an analog pin). So, first, use a different number (eg. 12). Then, have them give it 122 as a number, and see what happens. (That will break at runtime... has to be bigger than the ATmega1280)
+
+FIX IN ALL PLACES: Pin numbers over 13 are not on the board. Probably shouldn't use them for examples. At least, not at this point.
+
+- "MANY interesting programs need to..." as opposed to "Interesting programs..."
+
+3.3.1 - Too much detail at this point? Also, not all instructions are one cycle... so we don't exe 16M instr/second. Still, too much information. (Only one processor, take turns. Be simple.)
+
+4.3 Lowercase "K" in resistor values. (Consistent throughout text.)
+
+4.3 Wrong colors in resistor... number of zeros after number, not in the whole number. (brown black orange not green)
+
+4.3 +5V NOT EQUAL to power outlet. (Bad analogy. Scares the willies out of the user.) Whole section needs reworing, including redundant resistor at end of paragraph.
+
+- UPDATE DIAGRAMS TO REFLECT STYLE IN CH4.GRAFFLE (until we change it sometime later.)
+
+- When passing values on a channel, it is like handing someone/passing someone your business card rather than a high five---shake hands and take the card. (Not *trading* cards...) (Passing a note might be clearer. And, actually, shaking hands may just confuse the issue... so it might just be OK to say it is like passing a note.) Either way... probably ok to keep the high five for now, and expand to passing a note later.
+
+- Repeat halves of comic strips for each of the two cases ("send end of a channel", etc.)
+
+- "A few quick words" is kinda crap---better structuring. "Here are some of the new things we've introduced..."
+
+- "LOW/HIGH" - Some devices turn on when LOW. (Worth mentioning---common.)
+
+- Goals could probably be bulleted lists as part of intro for each chapter. (Instead of in a paragraph.)
+
+- Comments need to be mentioned sooner in chapter 5.
+
+- Have a comment at the start of CH5 code that says what comments are, and then expand in the code description section.
+
+- Chapter 5 needs a new comic about passing notes as opposed to just a high five.
+
+- Channels with different shapes... worth a picture?
+
+- Process diagrams---include a type annotation on the channel as well? How does that relate to shape? At all?
+
+- Submarine pings are two way, not for messaging, etc. Not a good analogy.
+
+- Space before ( in all code. Style!
