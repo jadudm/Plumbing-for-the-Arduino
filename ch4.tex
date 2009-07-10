@@ -23,9 +23,9 @@ A picture of what you're going to build (and the circuit diagram) can be found i
 
 \begin{figure}[h]
   \begin{center}
-    \includegraphics[width=0.6\linewidth]{images/button-circuit}
+    \includegraphics[width=0.6\linewidth]{images/ch4-button-circuit}
     \caption{Connecting a button to the Arduino.}
-    \label{diagram:button-circuit}
+    \label{diagram:ch4-button-circuit}
   \end{center}
 \end{figure}
 
@@ -50,9 +50,9 @@ In this program, the button is clearly turning the LED on and off. To do this, w
  
 \begin{figure}[h]
   \begin{center}
-    \includegraphics[width=0.8\linewidth]{images/button-toggle-led}
+    \includegraphics[width=0.8\linewidth]{images/ch4-button-toggle-led}
     \caption{A communicating two-process network.}
-    \label{diagram:button-toggle-led}
+    \label{diagram:ch4-button-toggle-led}
   \end{center}
 \end{figure}
 
@@ -63,7 +63,7 @@ This diagram tells us a great deal about the \plumbing program that we're writin
 \begin{itemize}
 	\item Each box in the diagram represents a process. Because there are two boxes in the diagram, we can expect to find a \PAR in our code with two processes indented underneath it. 
 	\item The two processes are connected by a single \CHANnel. A channel carries information in one direction only, from one process to another. In this diagram, the channel's name is {\code s}.
-	\item Each process takes some other parameters; in this case, the process called {\procname button.press} takes a pin number; the process {\procname pin.toggle} takes both a pin number as well as whether it should start out \LOW or \HIGH.
+	\item Each process takes some other parameters; in this case, the process called \bp takes a pin number; the process \tp takes both a pin number as well as whether it should start out \LOW or \HIGH.
 \end{itemize}
 
 Process network diagrams are a good way to think about \plumbing programs. We will see many more pictures of process networks, and will see how they are converted into code time and again. This is your first introduction, and we'll spiral deeper into these ideas in the coming chapters.
@@ -73,13 +73,13 @@ We need a \CHANnel to share information from one process to another in a \plumbi
 
 \begin{figure}[h]
   \begin{center}
-    \includegraphics[width=0.6\linewidth]{images/pattern-channel-decl}
+    \includegraphics[width=0.6\linewidth]{images/ch4-pattern-channel-decl}
     \caption{How to declare a channel.}
-    \label{diagram:pattern-channel-decl}
+    \label{diagram:ch4-pattern-channel-decl}
   \end{center}
 \end{figure}
 
-The first blank contains the {\em kind} of information that is going over the channel. If you prefer, you can think of each channel as having a particular shape, and only information that matches that shape can travel through the channel. In this chapter's code, we are sending a \SIGNAL over the channel---think of it as a sonar ping that a submarine might emit.
+The first blank contains the {\em kind} of information that is going over the channel. If you prefer, you can think of each channel as having a particular shape, and only information that matches that shape can travel through the channel. In this chapter's code, we are sending a \SIGNALV over the channel---think of it as a sonar ping that a submarine might emit.
 
 The second blank is the {\em name} of the channel. As the programmer, you get to choose the channel name. When we are naming channels within a \PROC, we will typically give them single-letter names. So, this channel is named {\code s}. 
 
@@ -89,25 +89,25 @@ The last thing to note about declaring a channel is that it typically comes befo
 
 \begin{figure}[h]
   \begin{center}
-    \includegraphics[width=0.8\linewidth]{images/high-five-channel-comms}
+    \includegraphics[width=0.8\linewidth]{images/ch4-high-five-channel-comms}
     \caption{Channel communication is like a high-five.}
-    \label{diagram:high-five-channel-comms}
+    \label{diagram:ch4-high-five-channel-comms}
   \end{center}
 \end{figure}
 
 Channel communication is like giving your friend a high-five (Figure~\vref{diagram:high-five-channel-comms}).
 
 
-The process {\procname button.press} sits around waiting for you to press the button. When you do, it says ``high five!'' over the channel {\code s}. It then waits until {\code pin.toggle} gets around to completing the high five, at which point the \SIGNAL has been passed from one process to another. (This, of course, is awesome.)
+The process \bp sits around waiting for you to press the button. When you do, it says ``high five!'' over the channel {\code s}. It then waits until \tp gets around to completing the high five, at which point the \SIGNALV has been passed from one process to another. (This, of course, is awesome.)
 
-From the point of view of the {\procname pin.toggle} process, it says ``high five?,'' and hopes that {\code button.press} won't leave it hanging. However, {\procname pin.toggle} will wait forever, if necessary, for a \SIGNAL from {\procname button.press}. When you get around to pushing the button on the Arduino, {\procname button.press} completes the high five with {\procname pin.toggle}, and your LED turns on or off.
+From the point of view of the \tp process, it says ``high five?,'' and hopes that \bp won't leave it hanging. However, \tp will wait forever, if necessary, for a \SIGNALV from \bp. When you get around to pushing the button on the Arduino, \bp completes the high five with \tp, and your LED turns on or off.
 
 
 \subsubsection{The sending end of a channel}
-The {\procname button.press} process holds the sending end of the channel. That is because we want a \SIGNAL sent to the {\procname pin.toggle} process whenever the button is pressed. To make it clear that {\procname button.press} holds the sending end of the channel, we provide the channel as a parameter to the process, but put an exclamation point after the channel name. Think of it as shouting: the {\procname button.press} process will be shouting! some information to the process at the other end of the channel.
+The \bp process holds the sending end of the channel. That is because we want a \SIGNALV sent to the \tp process whenever the button is pressed. To make it clear that \bp holds the sending end of the channel, we provide the channel as a parameter to the process, but put an exclamation point after the channel name. Think of it as shouting: the \bp process will be shouting! some information to the process at the other end of the channel.
 
 \subsubsection{The receiving end of a channel}
-The {\procname pin.toggle} process is listening for a signal. It will wait all day if necessary, and until it hears a message on the channel, it won't do anything. That is why the parameter {\code s?} has a question mark: it means that {\procname pin.toggle} is saying ``what? huh?,''waiting for {\procname button.press} to send it a message.
+The \tp process is listening for a signal. It will wait all day if necessary, and until it hears a message on the channel, it won't do anything. That is why the parameter {\code s?} has a question mark: it means that \tp is saying ``what? huh?,''waiting for \bp to send it a message.
 
 \subsection{A few quick words}
 Just a few quick words about the other new things in this chapter's code.
@@ -115,8 +115,8 @@ Just a few quick words about the other new things in this chapter's code.
 \subsubsection{A quick word about \LOW and \HIGH}
 We thought we should mention this briefly: there is a reason we do not say {\code ON} and {\code OFF} in our code. You see, LEDs turn on at a specific voltage, but it isn't 5V. It is actually somewhere inbetween 0V and 5V, and it is a little different for every LED. For that reason, we say that we drive a pin \LOW when we take it down near 0V, and we drive a pin \HIGH when we take it up near 5V. So, to turn an LED on, we drive its pin \HIGH; to turn it off, we drive that pin \LOW. Why people call it ``driving a pin'' is another thing entirely.
 
-\subsubsection{A quick word about the dot in {\procname button.press}}
-The {\code .} in {\procname button.press} doesn't mean anything. It is how, in \plumbing programs, we insert a space into the name of a process. You see, you can't use spaces, so we use a dot. (If you're familiar with Java, please forget everything you have ever learned about the dot. It doesn't apply here.)
+\subsubsection{A quick word about the dot in \bp}
+The {\code .} in \bp doesn't mean anything. It is how, in \plumbing programs, we insert a space into the name of a process. You see, you can't use spaces, so we use a dot. (If you're familiar with Java, please forget everything you have ever learned about the dot. It doesn't apply here.)
 
 \subsubsection{Channel ends as parameters}
 Up until now, you have only seen numbers as parameters. Channel ends can be parameters, too. Otherwise, how would one process talk to another?
@@ -139,11 +139,11 @@ There are lots of ways to break the code in this chapter, as usual.
 	\item[Leave out the {\code !} and {\code ?}]\ \\
 	Try it. As it happens, this isn't an error. Perhaps it should be?
 	
-	\item[Forget the \SIGNAL]\ \\
-	When we write \CHAN \SIGNAL {\code s}, we are telling \plumbing that the channel carries a \SIGNAL over the channel {\code s} and nothing else. What happens if you delete the word \SIGNAL?
+	\item[Forget the \SIGNALT]\ \\
+	When we write \CHAN \ \SIGNALT \ {\code s}, we are telling \plumbing that the channel carries information of the type \SIGNALT over the channel {\code s} and nothing else. What happens if you delete the word \SIGNALT?
 	
 	\item[Forget the {\code s}]\ \\
-	When we write \CHAN \ \SIGNAL \ {\code s}, we are telling \plumbing that the channel is named {\code s}. What happens if you remove the letter {\code s}?
+	When we write \CHAN \ \SIGNALT \ {\code s}, we are telling \plumbing that the channel is named {\code s}. What happens if you remove the letter {\code s}?
 		
 \end{description}
 

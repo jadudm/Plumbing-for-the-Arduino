@@ -1,10 +1,11 @@
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
 
 
- \definecolor{Comment}{cmyk}{0,0.81,1,0.60} % Brown
+ \definecolor{Comment}{rgb}{0.4,0.2,0.6} % Purple
  \definecolor{Keyword}{cmyk}{0.64,0,0.95,0.40} % Green
  %\definecolor{Constant}{cmyk}{0.62,0.57,0.23,0} % Cadet Blue
-\definecolor{Constant}{rgb}{0.9,0.3,0.3} % Cadet Blue
+ \definecolor{Type}{rgb}{0.9,0.3,0.3} % Pink
+ \definecolor{Constant}{rgb}{0.2,0.2,0.9} % Blue
 
 \newcommand{\plumbing}{Plumbing\xspace}
 
@@ -20,6 +21,7 @@
 \newcommand{\constant}{\ttfamily\bfseries\color{Constant}}
 \newcommand{\procname}{\ttfamily}
 \newcommand{\keyword}{\ttfamily\bfseries\color{Keyword}}
+\newcommand{\type}{\ttfamily\bfseries\color{Type}}
 
 \newcommand{\PROCedure}{{\keyword PROC}edure\xspace}
 \newcommand{\PROC}{{\keyword PROC}\xspace}
@@ -28,12 +30,18 @@
 \newcommand{\CHANnel}{{\keyword CHAN}nel\xspace}
 \newcommand{\CHAN}{{\keyword CHAN}\xspace}
 
-\newcommand{\SIGNAL}{{\constant SIGNAL}\xspace}
+\newcommand{\SIGNALT}{{\type SIGNAL}\xspace}
+\newcommand{\SIGNALV}{{\constant SIGNAL}\xspace}
+
+\newcommand{\LEVELT}{{\type LEVEL}\xspace}
 \newcommand{\HIGH}{{\constant HIGH}\xspace}
 \newcommand{\LOW}{{\constant LOW}\xspace}
 
-\newcommand{\webnote}[2]{\footnote{See \url{#1}\xspace for more information about #2.}}
 \newcommand{\ohm}{$\tcohm$\xspace}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Macros for layout/controlling common structures in the text.
+\newcommand{\webnote}[2]{\footnote{See \url{#1}\xspace for more information about #2.}}
  
 % Definition for typesetting occam source code
 \lstdefinelanguage{occam} 
@@ -43,7 +51,7 @@
 	emph={TRUE, FALSE, LOW, HIGH},
 	emphstyle=\color{Constant}\bfseries, 
 	sensitive=true,
-	comment=[l]{---},
+	comment=[l]{--},
 	string=[b]",
 	frame=ltrb,
 	framesep=5pt,
@@ -72,3 +80,11 @@
 
 \newcommand{\strong}{\bfseries}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Process names
+\newcommand{\tp}{{\procname toggle.pin}\xspace}
+\newcommand{\bp}{{\procname button.press}\xspace}
+\newcommand{\toggle}{{\procname toggle}\xspace}
+\newcommand{\pl}{{\procname pin.level}\xspace}
+\newcommand{\il}{{\procname invert.level}\xspace}
+\newcommand{\tick}{{\procname tick}\xspace}

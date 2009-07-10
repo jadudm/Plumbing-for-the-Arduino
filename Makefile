@@ -2,7 +2,7 @@ all:
 	texi2pdf book.tex
 
 clean:
-	rm *.aux
-	rm *.log
-	rm *.bbl
-	rm *.pdf
+	rm -f *.aux
+	rm -f *.log
+	rm -f *.bbl
+	rm -f book.pdf
