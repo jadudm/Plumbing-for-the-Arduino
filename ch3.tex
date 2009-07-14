@@ -20,7 +20,7 @@ In the previous chapters, we've written a {\procname main} procedure that only d
 
 So far, we have seen that a \PROC may only contain one process, and that is indented by two spaces. If we want to do two things simultaneously, then we need to use something like a \PAR. Then, indenting two more spaces, we can put {\em any number of additional processes}. In the code in Listing~\vref{code:blink-par}, you can see that we are asking \plumbing to run two things in parallel, because there are two procedures underneath the \PAR.
 
-As it happens, we are asking \plumbing to run two {\procname blink} processes. This is fine, because we're going to ask it to blink the LED on pin {\constant 13} at the same time as we blink the LED on pin {\constant 14}. Type in this new program and upload it to your Arduino; if all goes well, both LEDs should be blinking at the same time.
+As it happens, we are asking \plumbing to run two {\procname blink} processes. This is fine, because we're going to ask it to blink the LED on pin {\constant 13} at the same time as we blink the LED on pin {\constant 12}. Type in this new program and upload it to your Arduino; if all goes well, both LEDs should be blinking at the same time.
 
 \subsection{The truth about \PAR}
 We have been saying that when you indent processes underneath a \PAR that they will happen ``at the same time.'' This is the real-world implication of things happening ``in parallel.'' However, your Arduino only has one processor, and therefore it can only do one thing at a time.
@@ -56,7 +56,7 @@ There are a lot of neat ways to break the code in this chapter.
 	\begin{lstlisting}[firstnumber=2]
 PAR
   heartbeat ()
-  blink (14, 500)
+  blink (12, 500)
 	\end{lstlisting}
 	What happens? Does this break anything? Why or why not?
 	\item[Replace another {\procname blink} with a {\procname heartbeat}]\ \\

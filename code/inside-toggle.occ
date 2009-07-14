@@ -1,10 +1,10 @@
 PROC main ()
   CHAN SIGNAL s:
-  CHAN LEVEL  v:
+  CHAN LEVEL v:
   PAR
-    -- The button is attached to pin 14
-    button.press (14, s!)
-    toggle (s?, v!)
+    -- The button is attached to pin 2
+    button.press (2, s!)
     -- Start with the built-in LED pin set LOW
-    pin.level (13, LOW, v?)
+    toggle (LOW, s?, v!)
+    digital.output (13, v?)
 :

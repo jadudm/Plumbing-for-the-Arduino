@@ -68,7 +68,7 @@ The breadboard provides a foundation for building and testing small circuits. Br
 \end{figure}
 
 \subsection{The Arduino}
-With the Arduino turned off (unplugged from the USB port), take a wire and connect it from pin 14 to one of the columns in the breadboard. Perhaps start with the left-most column, and we'll build our circuit from left-to-right.
+With the Arduino turned off (unplugged from the USB port), take a wire and connect it from pin 12 to one of the columns in the breadboard. Perhaps start with the left-most column, and we'll build our circuit from left-to-right.
 
 \subsection{The Resistor}
 If you plug your LED directly into an electronic device---even one as small as the Arduino---you might ``cook'' it. When you cook an LED, it typically flashes brightly once and never lights again. Therefore, we need a resistor to help limit the flow of current through our circuit, so the LED doesn't get fried. If you need a rule of thumb (which is not always correct!), a 1K\ohm resistor is typically more than enough to protect your LED.
@@ -101,11 +101,11 @@ Lastly, to complete the circuit, connect the negative side of the resistor to th
   \end{center}
 \end{figure}
 
-Now, you should be able to plug in the USB cable, and type in the code from this chapter. If you compare the code in Listing~\vref{code:blink13} and the code in Listing~\vref{code:blink14}, you will see that we changed  one of the parameters to the procedure {\procname blink} on line 2. Instead of blinking pin {\constant 13}, we instead are asking the Arduino to blink pin {\constant 14}.
+Now, you should be able to plug in the USB cable, and type in the code from this chapter. If you compare the code in Listing~\vref{code:blink13} and the code in Listing~\vref{code:blink12}, you will see that we changed  one of the parameters to the procedure {\procname blink} on line 2. Instead of blinking pin {\constant 13}, we instead are asking the Arduino to blink pin {\constant 12}.
 
 \newpage
 
-\lstinputlisting[caption=Blinking an external LED on pin 14.,label=code:blink14]{code/blink14.occ}
+\lstinputlisting[caption=Blinking an external LED on pin 12.,label=code:blink12]{code/blink12.occ}
 
 If you've done everything correctly, you should now have an external LED blinking away!
 
@@ -132,13 +132,13 @@ There are quite a few ways you can break the software in this chapter---even tho
 
 \begin{description}
 	\item[Wrong pin]\ \\
-		If you forget to change the pin number from {\constant 13} to {\constant 14}, then you'll blink the wrong LED. Or, for that matter, if you blink pin {\constant 15}, nothing will appear to happen at all.
+		If you forget to change the pin number from {\constant 13} to {\constant 12}, then you'll blink the wrong LED. Or, for that matter, if you blink pin {\constant 11}, nothing will appear to happen at all.
 	\item[Crazy parameters]\ \\
-	Try replacing the number {\constant 14} with {\code FOURTEEN}. See what happens. 
+	Try replacing the number {\constant 12} with {\code TWELVE}. See what happens. 
 	\item[Too many parameters]\ \\
-	Try using a parameter list like {\code 13, 14, 500}. That is, your code would look like:
+	Try using a parameter list like {\code 13, 12, 500}. That is, your code would look like:
 	\begin{verbatim}
-		blink (13, 14, 500)
+		blink (13, 12, 500)
 	\end{verbatim}
 	\item[Parameters too big]\ \\
 	The parameter for the speed of the LED blink is an integer---a whole number without any decimal parts, if you prefer. Computers can only keep track of numbers that are so big (or small). How big can you make the blink speed? 

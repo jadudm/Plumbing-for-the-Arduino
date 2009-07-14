@@ -1,5 +1,5 @@
 PROC main ()
   PAR
     blink (13, 500)
-    blink (14, 500)
+    blink (12, 500)
 :

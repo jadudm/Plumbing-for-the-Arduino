@@ -1,0 +1,3 @@
+PROC main ()
+  blink (12, 500)
+:
