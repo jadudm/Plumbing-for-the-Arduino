@@ -5,24 +5,63 @@ Because we expect you to be following along actively, we're not going to spend s
 The goals for this chapter are for you to:
 
 \begin{enumerate}
-	\item Write your first program using \plumbing.
+	\item Write your first program using the \plumbing library.
 	\item Run it on your Arduino.
 	\item Break your first program, and fix it.
 \end{enumerate}
 
-\CODE
-\lstinputlisting[caption=The {\code heartbeat} tells you when things are working.,label=code:heartbeat]{code/heartbeat.occ}
 
-There are two things we should mention that will help you read this code. First, remember that the {\strong line numbers are not part of the code}. They are there to help us write about the code and help you talk to others about it. Second, it is very important to use spaces when programming in \occam; note how line 2 is indented by {\em two spaces} at the start. We could print the code like this, so that you could see the spaces more clearly:
+\section{Step By Step}
+In most chapters, we would now dive straight into the code you need to write or the circuit you need to build, and then discuss the patterns you should be aware of in the program you just wrote. (Programs have many patterns to them---learning to recognize these patterns is an important step in becoming comfortable with programming in any language.) In this chapter, we'll take it slow and go one step at a time.
+          
+\subsection{Open JEdit}
+JEdit is a free and open-source editor written in Java. It runs on Mac, Linux, and Windows. We added a ``plug-in'' to this project that lets JEdit talk to your Arduino. You can freely download a version of JEdit from \ccc that has our plug-in pre-configured and ready to go for your choice of operating system.
+      
+\begin{figure}[bph]
+  \begin{center}
+    \includegraphics[height=2.5in]{screenshots/20091207-jedit-docked-occplug}
+    \caption{The JEdit program editor.}
+    \label{screenshot:jedit-occplug-docked}
+  \end{center}
+\end{figure}
 
-\CODE
-\lstinputlisting[caption=The {\code heartbeat} tells you when things are working.,label=code:heartbeat,showspaces=true]{code/heartbeat.occ}
+\afterpage{\clearpage}
 
+\subsection{Write your Program}
+Once you have JEdit open, you can write your first program. The first step is to get the built-in LED on your Arduino blinking---this will tell us that everything works. 
 
-\subsection{How To}
-Normally, we would go straight into the interesting {\em patterns} that exist in your code. Because this is the first time you're writing \plumbing code for the Arduino, we want you to get something going as quickly as possible. We'll circle around to theory later.
+%\CODE
+\lstinputlisting[%caption=The {\code heartbeat} should always be beating.,
+label=code:heartbeat]{code/heartbeat.occ}
 
-{\em ... introduce compiling, uploading ...}
+Type the above program into JEdit. Note that there are some spaces hidden there. Here's the same program, but with the spaces clearly marked:
+
+%\CODE
+\lstinputlisting[%caption=The {\code heartbeat} with spaces shown.,
+label=code:heartbeat,showspaces=true]{code/heartbeat.occ}
+
+Those {\strong spaces matter a lot}. The most important spaces are the ones on the left-hand side of each line---the {\strong indentation}. If you get indentation wrong in \occam, you'll get an error. We'll explore some common errors at the end of the chapter. 
+
+After copying the code, save it as {\code heartbeat.occ}. If you'd like to call it something else, please feel free to do so. On the Mac, you can press COMMAND-S, and under Linux and Windows, CTRL-S. Or, you can click the little floppy disk in the toolbar. Regardless of how you do it, save your work often!
+
+% XXX Need to tell them to "Setup Arduino," which requires downloading the TVM...
+
+\subsection{Build Your Code}
+Your code is human-readable. (You may not feel that way yet, but it is.) We need to convert it from something you understand to something your Arduino understands. We would properly call this {\em compiling} your program. Go up to the {\em Plugins} menu, go down to {\em Plumbing}, and select the {\em Start Plumbing} option. You'll get a new floating window that provides a few critical tools. First, you need to select ``Arduino'' from the drop-down menu (it defaults to ``Desktop'').
+
+% XXX Need to get a version of this image that has "Arduino" instead of "Desktop"       
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.8\linewidth]{screenshots/20091207-compile-button}
+    \caption{Compile your code before uploading.}
+    \label{screenshot:compile-button}
+  \end{center}
+\end{figure}
+
+Once you have the Plumbing extension running, you can compile and run your program. When you press the round arrow, our tools first check to see if your code is grammatically correct, and then transform your code into something that will run on the Arduino. If you made any mistakes in typing in your program, this is where you'll get one or more seemingly incomprehensible errors. Think of them not as ``errors'' but instead as ``learning opportunities.''
+                                         
+% XXX Need to cover how we select which Arduino in the plugin...
+If you code compiled, you're good to go! Hit the running figure, and your code will be sent to your Arduino and begin executing.
 
 \PATTERNS
 When you're learning to program, it is important to see the patterns that exist in the code. Sometimes these patterns are strict rules that you cannot violate, or you will encounter an error. We will also see patterns that represent how programmers typically do things.\footnote{Should we differentiate in the book more clearly?} We'll try and mention when we're introducing one and not the other, but really we expect you to discover which are which through careful experimentation.
