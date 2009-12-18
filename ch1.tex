@@ -64,10 +64,10 @@ Once you have the Plumbing extension running, you can compile and run your progr
 If you code compiled, you're good to go! Hit the running figure, and your code will be sent to your Arduino and begin executing.
 
 \PATTERNS
-When you're learning to program, it is important to see the patterns that exist in the code. Sometimes these patterns are strict rules that you cannot violate, or you will encounter an error. We will also see patterns that represent how programmers typically do things.\footnote{Should we differentiate in the book more clearly?} We'll try and mention when we're introducing one and not the other, but really we expect you to discover which are which through careful experimentation.
+When you're learning to program, it is important to see the patterns that exist in the code. Sometimes these patterns are strict rules that you cannot violate, or you will encounter an error. We will also see patterns that represent how programmers typically do things. What follows is the first of these strict rules---which we call {\strong syntax}---that you will encounter in \occam programs. 
 
 \subsection{The \PROCedure Definition}
-The first pattern you see in this program is the definition of the procedure {\code main}. Lets look at that pattern again (Figure~\vref{pattern:proc-defn}).
+The first pattern you see in this program is the definition of the procedure called {\code main}. Figure~\vref{pattern:ch1-proc-defn}) removes the details of the code so we can focus in on that pattern itself.
 
 \begin{figure}[h]
   \begin{center}
@@ -76,10 +76,23 @@ The first pattern you see in this program is the definition of the procedure {\c
     \label{pattern:ch1-proc-defn}
   \end{center}
 \end{figure}
+        
+%%%%%%%%
+% NEWPAGE
+%%%%%%%%
+\newpage
 
-You will see a lot of \PROCedure definitions while you are using \plumbing, because they help us keep our code organized. A \PROCedure definition always starts with the word \PROC. This is followed by the name of the procedure; in our first program, the procedure is called {\code main}. A set of parentheses come next, and then we hit return. (We'll learn where and when to put things inside those parentheses later!) We will call the stuff inside the \PROCedure its ``body.'' This is the code that makes up the actions of the \PROC we are writing. Note that the body must be indented two spaces. 
+You will see a lot of \PROCedure definitions while you are using \plumbing, because they help us keep our code organized. There are a few things we can say about every \PROC definitions that you will encounter:
 
-The \PROC ends with a colon, all by itself on a line. This signals that we're done defining this particular \PROC, and are ready to start writing another. We'll get to that in Chapter \XXX.
+\begin{itemize}
+	\item A \PROCedure definition always starts with the word \PROC. 
+	\item \PROC is always followed by the name of the procedure; in our first program, the procedure is called {\code main}. 
+	\item A set of parentheses follows the name of the \PROC; then we hit return. (We'll learn where and when to put things inside those parentheses later!) 
+	\item We will call the stuff inside the \PROCedure its {\code body}. This is the code that makes up the actions of the \PROC we are writing. In our first program, there is only one line of code in the body of {\code main}.
+	\item The \PROC ends with a colon, all by itself on a line. This signals that we're done defining this particular \PROC, and are ready to start writing another.
+\end{itemize}
+
+While it may seem daunting to have all the rules spelled out that way, we're trying to be clear and help you see that programming is not so much a mystery as it is a matter of following rules. Every program you write will end with a \PROC that out of habit you might call {\code main}. That is because the \PROC at the end of your program is the first one that will be run by your Arduino. ``And, behold, there are last which shall be first...''
 
 \subsection{A \PROCedure Call}
 Look again at line 2 of our first program:
