@@ -88,18 +88,18 @@ You will see a lot of \PROCedure definitions while you are using \plumbing, beca
 	\item A \PROCedure definition always starts with the word \PROC. 
 	\item \PROC is always followed by the name of the procedure; in our first program, the procedure is called {\code main}. 
 	\item A set of parentheses follows the name of the \PROC; then we hit return. (We'll learn where and when to put things inside those parentheses later!) 
-	\item We will call the stuff inside the \PROCedure its {\code body}. This is the code that makes up the actions of the \PROC we are writing. In our first program, there is only one line of code in the body of {\code main}.
+	\item We will call the stuff inside the \PROCedure its {\strong body}. This is the code that makes up the actions of the \PROC we are writing. In our first program, there is only one line of code in the body of {\code main}.
 	\item The \PROC ends with a colon, all by itself on a line. This signals that we're done defining this particular \PROC, and are ready to start writing another.
 \end{itemize}
 
-While it may seem daunting to have all the rules spelled out that way, we're trying to be clear and help you see that programming is not so much a mystery as it is a matter of following rules. Every program you write will end with a \PROC that out of habit you might call {\code main}. That is because the \PROC at the end of your program is the first one that will be run by your Arduino. ``And, behold, there are last which shall be first...''
+While it may seem daunting to have all the rules spelled out that way, we're trying to be clear and help you see that programming is not so much a mystery as it is a matter of following rules. Every program you write will end with a \PROC that out of habit you might call {\code main}. That is because the \PROC at the end of your program is the first one that will be run by your Arduino. % ``And, behold, there are last which shall be first...''
 
 \subsection{A \PROCedure Call}
 Look again at line 2 of our first program:
 
 \lstinputlisting[]{code/heartbeat.occ}
 
-From what we have just learned about \PROC definitions, we can say that the body of the \PROC named {\code main} is one line long. That line is a \PROCedure call. A procedure call typically looks like Figure~\vref{pattern:proc-call}.
+From what we have just learned about \PROC definitions, we can say that the body of the \PROC named {\code main} is one line long. That line is a \PROCedure call. A procedure call typically looks like Figure~\vref{pattern:ch1-proc-call}.
 
 \begin{figure}[h!]
   \begin{center}
