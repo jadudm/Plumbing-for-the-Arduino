@@ -19,7 +19,7 @@ JEdit is a free and open-source editor written in Java. It runs on Mac, Linux, a
       
 \begin{figure}[bph]
   \begin{center}
-    \includegraphics[height=2.5in]{screenshots/20091207-jedit-docked-occplug}
+    \includegraphics[height=2.5in]{screenshots/20100108-jedit-docked-occplug}
     \caption{The JEdit program editor.}
     \label{screenshot:jedit-occplug-docked}
   \end{center}
@@ -49,19 +49,30 @@ After copying the code, save it as {\code heartbeat.occ}. If you'd like to call 
 \subsection{Build Your Code}
 Your code is human-readable. (You may not feel that way yet, but it is.) We need to convert it from something you understand to something your Arduino understands. We would properly call this {\em compiling} your program. Go up to the {\em Plugins} menu, go down to {\em Plumbing}, and select the {\em Start Plumbing} option. You'll get a new floating window that provides a few critical tools. First, you need to select ``Arduino'' from the drop-down menu (it defaults to ``Desktop'').
 
-% XXX Need to get a version of this image that has "Arduino" instead of "Desktop"       
 \begin{figure}[h]
   \begin{center}
-    \includegraphics[width=0.8\linewidth]{screenshots/20091207-compile-button}
+    \includegraphics[width=1.0\linewidth]{screenshots/20100108-compile-button}
     \caption{Compile your code before uploading.}
     \label{screenshot:compile-button}
   \end{center}
 \end{figure}
 
-Once you have the Plumbing extension running, you can compile and run your program. When you press the round arrow, our tools first check to see if your code is grammatically correct, and then transform your code into something that will run on the Arduino. If you made any mistakes in typing in your program, this is where you'll get one or more seemingly incomprehensible errors. Think of them not as ``errors'' but instead as ``learning opportunities.''
-                                         
+Once you have the Plumbing extension running, you can compile and run your program. When you press the round arrow on the left, our tools first check to see if your code is grammatically correct, and then transform your code into something that will run on the Arduino. If you made any mistakes in typing in your program, this is where you'll get one or more seemingly incomprehensible errors. Think of them not as ``errors'' but instead as ``learning opportunities.''
+         
+\newpage
+                                
 % XXX Need to cover how we select which Arduino in the plugin...
-If you code compiled, you're good to go! Hit the running figure, and your code will be sent to your Arduino and begin executing.
+If you code compiled, you'll see a message that looks something like this:
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.8\linewidth]{screenshots/20100108-compile-successful}
+    \caption{Compile your code before uploading.}
+    \label{screenshot:compile-successful}
+  \end{center}
+\end{figure}
+
+If you get the ``green light,'' so to speak, you're good to go! Hit the running dude, and your code will be sent to your Arduino and begin executing.
 
 \PATTERNS
 When you're learning to program, it is important to see the patterns that exist in the code. Sometimes these patterns are strict rules that you cannot violate, or you will encounter an error. We will also see patterns that represent how programmers typically do things. What follows is the first of these strict rules---which we call {\strong syntax}---that you will encounter in \occam programs. 
@@ -112,12 +123,14 @@ From what we have just learned about \PROC definitions, we can say that the body
 A procedure call is a way of saying ``someone else wrote a bunch of great code, and I'd like to use it here, please.'' In this case, we wrote a \PROC called {\code heartbeat}, and we're making it available for you to use. That code blinks the LED on the Arduino.\footnote{You will learn how to write everything we show you in the first ten chapters, so you'll get to see all of the magic soon enough.} We would say that the \PROC called {\code heartbeat} is part of the \plumbing library. Or, if you prefer, when you are programming using \plumbing, {\code heartbeat} is one of the procedures provided for you to use.
 
 \BREAKAGE
-With every new piece of code or pattern, there are a dozen ways to break it. Because we want you to be {\em empowered explorers}, we're going to help you break your code at the end of every chapter. We highly recommend you experiment not only with writing programs that work, but also with writing programs that {\strong do not} work. You should keep a notebook of how you break these programs; while it may seem easy to fix them now, you may become confused when you decide to tackle a program of your own design, later.
+With every new piece of code or pattern, there are a dozen ways to break it. Because we want you to be {\em empowered explorers}, we're going to help you break your code at the end of every chapter. We highly recommend you experiment not only with writing programs that work, but also with writing programs that {\strong do not} work. You should keep a notebook of all the errors you encounter while learning to program; while it may seem easy to fix them now, you may become confused when you decide to tackle a program of your own design, later. Many who study programming are content for it to seem magical, instead of tackling it systematically. A detailed notebook goes a long way towards helping dispel mystery.
+
+Further, it is important to note that we are encouraging you to explore common errors made by many people learning to program in all languages. As it happens, we're pretty comfortable programming in \occam---which is why we know about these errors. Put simply, {\strong these are mistakes we still make}. I guess we're trying to say that there is no shame in these kinds of programming errors... and our hope is that, by exposing you to these errors directly, it will help reduce some of the frustration that sometimes accompanies learning new things. Go to it!
 
 \begin{description}
   \item[Misspellings]\ \\ One of the most common errors made by beginning programmers in any language are typos and misspellings. What happens if you type {\code PRC} instead of {\code PROC}? {\code maim} instead of {\code main}? {\code hearbeat} instead of {\code heartbeat}?
 
-	\item[CAPS LOCK]\ \\ What happens if you write {\code proc} instead of {\code PROC}? Likewise, {\code Heartbeat} instead of {\code heartbeat}? Problems with capitalization are common in all programming languages.
+	\item[Capitalization]\ \\ What happens if you write {\code proc} instead of {\code PROC}? Likewise, {\code Heartbeat} instead of {\code heartbeat}?
 
 	\item[Forget the colon]\ \\ What happens when you leave the colon off the end of a \PROC definition? This is a  common error.
 	
@@ -129,20 +142,40 @@ With every new piece of code or pattern, there are a dozen ways to break it. Bec
 \end{description}
 
 \subsection{Programming Strategies}
-Remember, learning to program in any language can be a frustrating experience. We highly recommend a few strategies for helping get over any hurdles you might encounter:
+Remember, learning to program in any language can be a frustrating experience. Here are a few tools you can use to help clear the hurdles you might encounter:
 
 \begin{description}
 	\item[Community]\ \\ We have a website with more information and mailing lists you can join; take a look at \url{http://concurrency.cc/}. If you get stuck, join the discussion list and ask a question. We're there to help.
 	\item[Attention to Detail]\ \\ Spaces matter in \plumbing, and they are {\em invisible}. Be careful about what you do, and begin learning to look with the eyes of a programmer: start looking for patterns and the invisible parts of your code.
 	\item[Take Notes]\ \\ As you discover new kinds of mistakes you've made, take the time to make note of them, as well as your analysis of how you fixed them. Eventually, you won't need to make the notes, because you'll make fewer mistakes.
-	\item[Take Breaks]\ \\ While programming and hacking are fun, sometimes you can get stuck. Walk away. Talk to an old friend on the phone. Do something else, and let your mind work on the problem in a different space.
+	%\item[Take Breaks]\ \\ While programming and hacking are fun, sometimes you can get stuck. Talk to an old friend on the phone. Do something else, and let your mind work on the problem in a different space.
+	\item[Take a Walk]\ \\ ...or a roll, or whatever mode of locomotion you have available to you. You should especially do this if the weather outside is your particular favorite. Let your mind wander as you wander the outdoors.
+	\item[Take a Shower]\ \\ Or do whatever relaxes you and breaks your routine. Perhaps you prefer a bubble bath? Either way, don't forget your rubber duckie.
 \end{description}
 
-\EXPLORATIONS
-This chapter had a lot of background material in it, but that is to be expected: it is the first chapter. And, because our code was so simple, there aren't a lot of explorations you can do yet. We promise, there will be more later.
+\newpage
 
-\begin{itemize}
-	\item What happens if you unplug the USB cable powering your Arduino while the program is running? 
-	\item What happens when you plug it back in?
-	\item What happens if you press the reset button while your program is running?
-\end{itemize}
+\section{Other Resources}
+\begin{wrapfigure}{r}{0.55\linewidth}
+	  \begin{center}
+    	\includegraphics[width=0.8\linewidth]{images/studying-programming-cover}
+			%\captionsetup{labelformat=empty,justification=centering,font=footnotesize}
+   		%\caption{A good resource.}
+    	%\label{screenshot:compile-successful}
+  \end{center}
+\end{wrapfigure}
+
+There is one last resource we'd like to recommend. {\em Studying Programming} by Sally Fincher and the Computer Science Education Research Group at the University of Kent in Canterbury, England, is a wonderful resource. It was written as a study guide for someone attempting to learn to program. Some of the hints and strategies we will be presenting throughout this text are informed by that text---but there is much more there than we can include here. We should know---Matt was one of the co-authors of both texts.
+
+\begin{comment}
+	\begin{figure}[h!]
+	  \begin{center}
+	    \includegraphics[width=0.4\linewidth]{images/studying-programming-cover}
+	    %\caption{A procedure call.}
+	    %\label{pattern:ch1-proc-call}
+	  \end{center}
+	\end{figure}
+\end{comment}
+
+While you might consider it a conflict of interest, we'd rather consider it expert opinion. There are few (if any) other texts that provide guidance and strategy for the novice programmer. Give it a look. And remember, Matt isn't making any money on either of these books, so this is just the best resource recommendation we can make to new programmers.
+

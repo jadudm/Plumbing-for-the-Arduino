@@ -16,7 +16,7 @@ You will need:
 	\item Your Arduino
 	\item A button
 	\item Some jumper wire
-	\item A 10K\ohm resistor
+	\item A 10k\ohm resistor
 \end{enumerate}
 
 A picture of what you're going to build (and the circuit diagram) can be found in Figure~\vref{diagram:button-circuit}.
@@ -29,7 +29,7 @@ A picture of what you're going to build (and the circuit diagram) can be found i
   \end{center}
 \end{figure}
 
-To build the circuit, place the button on your breadboard, and run a jumper from the {\code +5V} pin on the Arduino to the same column as one corner of the button. Then, from the opposite corner, connect a 10K\ohm resistor (Brown Black Green Gold). Connect the other end of the resistor to the {\code GND} pin on the Arduino with a jumper wire. If you forget the resistor, or use the wrong one, you could damage your Arduino---the resistor makes sure that too much current cannot flow from the voltage source to ground and damage our Arduino in the next step.
+To build the circuit, place the button on your breadboard, and run a jumper from the {\code +5V} pin on the Arduino to the same column as one corner of the button. Then, from the opposite corner, connect a 10k\ohm resistor (Brown Black Orange Gold). Connect the other end of the resistor to the {\code GND} pin on the Arduino with a jumper wire. If you forget the resistor, or use the wrong one, you could damage your Arduino---the resistor makes sure that too much current cannot flow from the voltage source to ground and damage our Arduino in the next step.
 
 You see, the circuit we have built doesn't yet connect to any pins that we can detect changes on. The {\code +5V} pin is just a power outlet. Plugging into {\code +5V} is like plugging something into an electrical socket in your house. The {\code GND} pin is the other end of the circuit; in most homes, there is actually a copper rod that goes from the electrical junction box into the actual ground. To prevent too much current from flowing through this circuit, we use a resistor 10K\ohm resistor to bring the current down to levels that the Arduino can safely measure.
 
