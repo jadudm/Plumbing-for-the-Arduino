@@ -1,0 +1,11 @@
+*.out
+*.toc
+*.aux
+*.log
+
+# Specific files
+book.pdf
+
+# Specific directories
+packages
+.DS_Store
