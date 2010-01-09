@@ -40,6 +40,16 @@
 
 \newcommand{\ohm}{$\tcohm$\xspace}
 
+\newcommand{\pinsix}{{\constant 6}\xspace}
+\newcommand{\pinseven}{{\constant 7}\xspace}
+\newcommand{\pineight}{{\constant 8}\xspace}
+\newcommand{\pinnine}{{\constant 9}\xspace}
+\newcommand{\pinten}{{\constant 10}\xspace}
+\newcommand{\pineleven}{{\constant 11}\xspace}
+\newcommand{\pintwelve}{{\constant 12}\xspace}
+\newcommand{\pinthirteen}{{\constant 13}\xspace}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Macros for layout/controlling common structures in the text.
 \newcommand{\webnote}[2]{\footnote{See \url{#1}\xspace for more information about #2.}}
@@ -73,7 +83,8 @@
 \newcommand{\mypi}{$\pi$}
 \newcommand{\myPI}{\large$\pi$}
 \newcommand{\occam}{{\fontfamily{phv}\selectfont occam-\myPI}\xspace}
-\newcommand{\occamone}{{\fontfamily{phv}\selectfont occam1}}
+\newcommand{\occamone}{{\fontfamily{phv}\selectfont occam1}\xspace}
+\newcommand{\justoccam}{{\fontfamily{phv}\selectfont occam}\xspace}
 \newcommand{\loccam}{{\fontfamily{phv}\selectfont loccam}}
 %\newcommand{\kroc}{{\fontfamily{phv}\selectfont soccam}}
 \def\kroc{KR{\sffamily o}C\xspace} 
@@ -91,6 +102,8 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Process names
+\newcommand{\heartbeat}{{\procname heartbeat}\xspace}
+\newcommand{\blink}{{\procname blink}\xspace}
 \newcommand{\tp}{{\procname toggle.pin}\xspace}
 \newcommand{\bp}{{\procname button.press}\xspace}
 \newcommand{\toggle}{{\procname toggle}\xspace}
@@ -100,3 +113,6 @@
 
 % For cover page
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+% Drawing Resistors
+\newcommand{\resistor}[3]{\colorbox{#1}{ }\colorbox{#2}{ }\colorbox{#3}{ }\colorbox{Goldenrod}{ }\xspace}
