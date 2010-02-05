@@ -9,7 +9,7 @@ So far, we have not done anything with \plumbing that you could not do in any ot
 \section{Build the circuit}
 You may have modified things as part of your explorations in the last chapter. For Chapter~\ref{ch3}, you'll need two LEDs connected to your Arduino---one connected to pin \pineleven and one connected to pin \pintwelve. The cathode of each LED should be connected to ground through a resistor with a value between 470\ohm and 1k\ohm. Figure~\vref{circuit:ch3-two-led-circuit} shows how you should configure your Arduino.	
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \begin{center}
     \includegraphics[width=0.8\linewidth]{images/ch3-two-led-circuit}
     \caption{A circuit connecting two LEDs to the Arduino.}
@@ -30,7 +30,7 @@ In the previous chapters, we've written a {\procname main} procedure that only d
 
 So far, we have seen that a \PROC may only contain one process, and that is indented by two spaces. To do two things simultaneously, then we need to use something like a \PAR. The \PAR itself is indented two spaces, and then everything underneath it is indented two more spaces. We can put {\em any number of additional processes} underneath a \PAR, and \occam will take care of running all of them in parallel. In the code in Listing~\vref{code:blink-par}, you can see that we are asking \plumbing to run two things in parallel, because there are two procedures underneath the \PAR. This pattern is illustrated in Figure~\vref{pattern:ch3-pattern-par}.
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \begin{center}
     \includegraphics[width=0.6\linewidth]{images/ch3-pattern-par}
     \caption{Executing two processes in parallel.}

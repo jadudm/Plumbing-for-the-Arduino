@@ -62,10 +62,12 @@
 % Definition for typesetting occam source code
 \lstdefinelanguage{occam} 
 {
-	keywords={PROC,PAR,SEQ,WHILE,ALT,CHAN,SIGNAL,LEVEL},
+	keywords={PROC,PAR,SEQ,WHILE,ALT,CHAN,LEVEL},
 	keywordstyle=\color{Keyword}\bfseries,
-	emph={TRUE, FALSE, LOW, HIGH},
+	emph={TRUE, FALSE, LOW, HIGH}, %SIGNAL?
 	emphstyle=\color{Constant}\bfseries, 
+	emph={[2]INT, BYTE}, %SIGNAL?
+	emphstyle={[2]\color{Type}},
 	sensitive=true,
 	comment=[l]{--},
 	string=[b]",
@@ -123,3 +125,25 @@
 
 % Drawing Resistors
 \newcommand{\resistor}[3]{\colorbox{#1}{ }\colorbox{#2}{ }\colorbox{#3}{ }\colorbox{Goldenrod}{ }\xspace}
+
+
+% I'm really unclear regarding left/right on this document.
+% I feel like I should have a bigger gutter, but it looks like
+% it pushes content *closer* to the gutter. This is wrong.
+
+%\usepackage{fancyhdr}
+%\setlength{\headheight}{15pt}
+ 
+%\pagestyle{fancy}
+%\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+%\renewcommand{\sectionmark}[1]{\markright{#1}{}}
+ 
+%\fancyhf{}
+%\fancyhead[LE,RO]{\thepage}
+%\fancyhead[RE]{\textit{\nouppercase{\leftmark}}}
+%\fancyhead[LO]{\textit{\nouppercase{\rightmark}}}
+ 
+%\fancypagestyle{plain}{ %
+%\fancyhf{} % remove everything
+%\renewcommand{\headrulewidth}{0pt} % remove lines as well
+%\renewcommand{\footrulewidth}{0pt}}

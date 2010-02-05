@@ -41,10 +41,151 @@ Getting this circuit wrong could have some unpleasant consequences for your Ardu
   \end{center}
 \end{figure}
 
-If the resistance is very small, and the voltage is constant ({\code +5V}), then the current must be big. Resistors limit the current flow in a circuit; without it, we would sink more current into \pintwo than the Arduino can handle, frying our processor. By including the resistor---specifically, a pretty big one---the current drops a great deal, and pressing the button does not mean death for pin \pintwo.
+If the resistance is very small, and the voltage is constant ({\code +5V}), then the current must be big. Resistors limit the current flow in a circuit; without it, we would sink more current into pin \pintwo than the Arduino can handle, frying our processor. By including the resistor---specifically, a pretty big one---the current drops a great deal, and pressing the button does not mean death for pin \pintwo.
 
-\CODE
+\newpage
+
+\section{Pictures and Code}
+
+Programming is an incredibly visual activity. If you observe two experienced programmers discussing a programming problem, you'll discover that they make heavy use of diagrams in their conversation. When we're working with \occam, we also make heavy use of diagrams. This is especially nice because we can translate those diagrams directly into code.
+
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[width=0.8\linewidth]{images/ch4-button-toggle-led}
+    \caption{A communicating two-process network.}
+    \label{diagram:ch4-button-toggle-led}
+  \end{center}
+\end{figure}
+
+We call this a {\strong process network}. Each large box represents a {\strong process}, which is a piece of code that is churns away independently of every other process. We use small, gray boxes to indicate {\strong parameters} that adjust the alter the behavior of the process they are attached to. So, in Figure~\vref{diagram:ch4-button-toggle-led}, we would say that {\code button.press} has one parameter, which is {\constant 14}. 
+
+The arrow between the two processes is a \CHANnel. Specifically, it is a communications channel---a wire---that connects one process to another. When we look at Figure~\vref{diagram:ch4-button-toggle-led}, we can tell that the process {\code button.press} communicates over a channel called {\code s} with a process called {\code pin.toggle}. We know that {\code pin.toggle} does {\em not} talk with {\code button.press}, simply because the arrow tells us which way the communications take place.
+
+
+\subsection{From pictures to code}
+We can, by following a few simple rules, convert the diagram on page ~\pageref{diagram:ch4-button-toggle-led}\xspace into code. {\strong All the information we need to write a valid \occam program is contained in the process network diagram.} It is a lot more fun to design programs  when you can do it visually in a sketchbook as opposed to in front of a screen.
+
+First, we see there are two {\strong processes}. We can write down their names.
+
+\vspace{3mm}
+\begin{lstlisting}
+button.press()
+pin.toggle()
+\end{lstlisting}
+
+Next, we know that both processes have {\strong parameters} associated with them (the gray boxes). We're going to need to include those parameters in our code%\footnote{Because these processes are part of the \plumbing library, we do have to make sure the parameters go in the right place... if you juggle them around randomly, you will get an error}
+.
+
+\vspace{3mm}
+\begin{lstlisting}
+button.press(14)
+pin.toggle(13, LOW)
+\end{lstlisting}
+
+Because there is an arrow connecting these two processes, we're going to need a \CHANnel to communicate over. But here's the trick: {\strong all communications must happen in \PARallel}. Why? Can you have a phone conversation with someone where you speak and {\em then} they listen? Or, do they have to be listening {\em at the same time} as you are speaking? See. 
+
+{\strong Communications must happen in \PARallel.}
+
+\newpage
+
+To run our two processes in parallel, we put them under a \PAR. Remember that everything underneath a \PAR gets indented by two spaces!
+
+\vspace{3mm}
+\begin{lstlisting}
+PAR
+  button.press(14)
+  pin.toggle(13, LOW)
+\end{lstlisting}
+
+We're only missing one thing at this point: the \CHANnel. We have to {\strong declare} the channel outside the \PAR. What this means is that we have to tell \occam that we want a communications channel (we'll call it {\code s}). Further, we have to tell \occam what {\em kind} of information it will carry. In this case, we want it to carry information of type \SIGNALT. 
+
+The declaration looks like this:
+
+\vspace{3mm}
+\begin{lstlisting}
+CHAN SIGNAL s:
+PAR
+  button.press(14)
+  pin.toggle(13, LOW)
+\end{lstlisting}
+
+By placing the declaration before the \PAR, it indicates that the processes that are running in parallel may, if they wish, use the channel {\code s} to send a \SIGNALV. Now we have just one step left: we have to give one end of the channel to each of the two processes in the \PAR.
+
+\newpage
+
+A channel is a lot like soup cans on string: one person talks, and the other listens. Unlike soup cans on string, you can't take turns talking and listening at both ends: there's just one talking end, and just one listening end, and that's it.
+
+\begin{wrapfigure}{r}{0.5\linewidth}
+	  \begin{center}
+    	\includegraphics[width=0.8\linewidth]{images/ch4-sending-receiving}
+			%\captionsetup{labelformat=empty,justification=centering,font=footnotesize}
+%\caption{A good resource.}
+    	%\label{screenshot:compile-successful}
+  \end{center}
+\end{wrapfigure}
+
+\ \\
+
+\vspace{3mm}
+The talking (or {\strong sending}) end of a channel is marked with a {\code !}. The exclamation point (or {\em bang}, from British English) tells \occam which end of the channel is sending information. It's as if that end of the channel is shouting: ``Hey! Hey you! I've got a \SIGNALV for you!''
+
+\vspace{3mm}
+The listening (or {\strong receiving}) end of a channel is marked with a {\code ?}. The question mark (or {\em eh?}, from Canadian English) tells \occam which end of the channel is receiving information. It's as if that end of the of the channel is waiting for instructions: ``Eh? Come again? What did you say?''
+
+\clearpage
+\newpage
+
+Lastly, wrap your code in a \PROCedure called {\code main}, and indent everything another two spaces. (We don't get that step from the diagram.) When you're done, your program should look like this:
+
+\vspace{3mm}
 \lstinputlisting[caption=Using a button to toggle an LED on and off.,label=code:button-toggle-led]{code/button-toggle-led.occ}
+
+\subsection{In summary}
+%There is a great deal more we could say about processes, channels, and how they communicate data between them. However, we won't say it right now. Instead, we want you to explore this code a bit, see how you can break it, and then keep moving forward. We'll continue to explain how and why \plumbing works the way it does in future chapters.
+
+To summarize what we learned in this chapter:
+
+
+\begin{itemize}
+	\item Each box in the diagram represents a \PROCedure. Because there are two boxes in the diagram, we can expect to find a \PAR in our code with two processes indented underneath it. 
+	\item The two processes are connected by a single \CHANnel. A channel carries information in one direction only, from one process to another. In this chapter, the channel's name was {\code s}.
+	\item Each process may take some parameters; in this chapter, the process called \bp takes a pin number; the process \tp takes both a pin number as well as whether it should start out \LOW or \HIGH.
+\end{itemize}
+
+
+\BREAKAGE
+There are lots of ways to break the code in this chapter, as usual.
+
+\begin{description}		
+	\item[Forget the colon]\ \\
+	At the end of the \CHANnel declaration, remove the colon. What happens? This is a common error made by many.
+	\item[Indent the PAR]\ \\
+	What happens if you indent the \PAR two spaces under the \CHAN? We suspect this makes \plumbing unhappy. This is rather common as errors go as well.
+
+	\item[Swap {\code !} and {\code ?}]\ \\
+	Try switching the location of the {\code !} and {\code ?}. 
+	
+	\item[Leave out the {\code !} and {\code ?}]\ \\
+	Try it. As it happens, this isn't an error. Perhaps it should be?
+	
+	\item[Forget the \SIGNALT]\ \\
+	When we write \CHAN \ \SIGNALT \ {\code s}, we are telling \plumbing that the channel carries information of the type \SIGNALT over the channel {\code s} and nothing else. What happens if you delete the word \SIGNALT?
+	
+	\item[Forget the {\code s}]\ \\
+	When we write \CHAN \ \SIGNALT \ {\code s}, we are telling \plumbing that the channel is named {\code s}. What happens if you remove the letter {\code s}?
+		
+\end{description}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% MATERIAL PULLED... NOT BAD, JUST NOT USED HERE.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{comment}
 
 
 \subsection{Test it!}
@@ -60,11 +201,11 @@ In this program, the button is clearly turning the LED on and off. To do this, w
 \subsection{A two-process network}
 \plumbing is all about connecting one parallel process up to another and communicating information between those processes. This turns out to be a highly visual notion, so we like to draw pictures of our process networks whenever possible.
  
-\begin{figure}[h]
+\begin{figure}[ht]
   \begin{center}
     \includegraphics[width=0.8\linewidth]{images/ch4-button-toggle-led}
     \caption{A communicating two-process network.}
-    \label{diagram:ch4-button-toggle-led}
+    \label{diagram:ch4-button-toggle-led-also}
   \end{center}
 \end{figure}
 
@@ -83,7 +224,7 @@ Process network diagrams are a good way to think about \plumbing programs. We wi
 \subsection{The channel}
 We need a \CHANnel to share information from one process to another in a \plumbing program. Actually, it is the {\em only} way to get information from one process to another. When you want to use a channel, you first have to {\strong declare} that channel in your code. The pattern for declaring a channel can be found in Figure~\vref{diagram:pattern-channel-decl}.
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \begin{center}
     \includegraphics[width=0.6\linewidth]{images/ch4-pattern-channel-decl}
     \caption{How to declare a channel.}
@@ -99,7 +240,7 @@ The last thing to note about declaring a channel is that it typically comes befo
 
 \subsubsection{How communication works}
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \begin{center}
     \includegraphics[width=0.8\linewidth]{images/ch4-high-five-channel-comms}
     \caption{Channel communication is like a high-five.}
@@ -136,28 +277,7 @@ Up until now, you have only seen numbers as parameters. Channel ends can be para
 \subsubsection{\LOW and \HIGH as parameters}
 \LOW and \HIGH are what we call {\em constants}. They get converted into numbers when you send your program to the Arduino. So, instead of putting ``magic numbers'' in your code (which you might forget the meaning of), you can use \LOW and \HIGH anywhere that we might talk about whether we should drive a pin to full voltage or zero voltage.
 
-\BREAKAGE
-There are lots of ways to break the code in this chapter, as usual.
-
-\begin{description}		
-	\item[Forget the colon]\ \\
-	At the end of the \CHANnel declaration, remove the colon. What happens? This is a common error made by many.
-	\item[Indent the PAR]\ \\
-	What happens if you indent the \PAR two spaces under the \CHAN? We suspect this makes \plumbing unhappy. This is rather common as errors go as well.
-
-	\item[Swap {\code !} and {\code ?}]\ \\
-	Try switching the location of the {\code !} and {\code ?}. 
-	
-	\item[Leave out the {\code !} and {\code ?}]\ \\
-	Try it. As it happens, this isn't an error. Perhaps it should be?
-	
-	\item[Forget the \SIGNALT]\ \\
-	When we write \CHAN \ \SIGNALT \ {\code s}, we are telling \plumbing that the channel carries information of the type \SIGNALT over the channel {\code s} and nothing else. What happens if you delete the word \SIGNALT?
-	
-	\item[Forget the {\code s}]\ \\
-	When we write \CHAN \ \SIGNALT \ {\code s}, we are telling \plumbing that the channel is named {\code s}. What happens if you remove the letter {\code s}?
-		
-\end{description}
+\end{comment}
 
 
 	

@@ -1,7 +1,8 @@
 BOOKPDF=plumbing-for-the-arduino.pdf
-DEST=/data/www/cc/concurrency/www/pdf/${BOOKPDF}
+DEST=/data/www/cc/concurrency/www/site/pdf/${BOOKPDF}
 all:
-	texi2pdf book.tex
+	pdflatex -shell-escape book.tex
+	pdflatex -shell-escape book.tex
 
 upload:
 	cp book.pdf ${BOOKPDF}
