@@ -1,0 +1,6 @@
+PROC main ()
+  CHAN SIGNAL s:
+  PAR
+    tick (500, s!)
+    pin.toggle (13, LOW, s?)
+:

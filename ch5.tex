@@ -1,17 +1,190 @@
-We promised that you would learn how to write everything you saw in the book. In this chapter, we continue exploring process networks, and learn how \tp is actually just two other processes stuck together with a channel.
+In the last chapter, we saw that one process can be substituted for another when they have the same input and output channels. In this chapter, we'll explore how we can combine several {\PROCedure}s into one new \PROCedure, simplifying our code further.
 
-\GOALS
-Continue exploring process networks, as well as learn about \LEVELT and processes with multiple channel parameters.
+Because we promised that you would learn how to write everything you saw in this book, we will peel back the layers of the \tp procedure, and show you what is inside of it. Specifically, you'll see that the \tp procedure is just two {\em more} procedures stuck together with a channel!
+
+\section{The Circuit}
+The circuit for this chapter is identical to Chapter~\ref{ch4}. You should be able to type in the code from this chapter, run it, and get exactly the same behavior as before. 
+
+\newpage
 
 \section{The Network}
 
-\begin{figure}[h]
+We'll continue using the network from Chapter~\ref{ch4}: \nameref{ch4}. 
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[width=0.8\linewidth]{images/ch4-button-toggle-led}
+    %\caption{The network from Chapter~\ref{ch4} again.}
+    %\label{diagram:ch4-button-toggle-led}
+  \end{center}
+\end{figure}
+
+\section{Breaking up is hard to do}
+
+We're going to ``break up'' the process called \tp, and represent it as two processes instead of one. The result will be a process network with a total of three processes.
+
+\begin{figure}[!ht]
   \begin{center}
     \includegraphics[width=\linewidth]{images/ch5-process-network}
     \caption{The process network for this chapter's code.}
     \label{diagram:ch5-process-network}
   \end{center}
 \end{figure}
+
+If you were to look in the code for the \plumbing library, you would find that \tp is actually just two processes running in \PARallel with each-other. In this chapter, we'll break \tp apart, and in the next chapter, we'll put it back together again.
+
+\newpage
+
+\subsection{From pictures to code}
+From this network, we can write the code. We know there are three processes, so we'll list all of them. Further, we know they communicate with each-other (because they're connected with channels), so we'll put them under a \PAR right from the start.
+
+\vspace{3mm}
+\begin{lstlisting}
+PAR
+  button.press()
+  toggle()
+  pin.level()
+\end{lstlisting}
+
+Next, we can see there are two {\CHANnel}s. One is of type \SIGNALT, the other of type \LEVELT. To use a channel, we have to declare it before it is used. So, we'll include {\em two} channel declarations.
+
+\vspace{3mm}
+\begin{lstlisting}
+CHAN SIGNAL s:
+CHAN LEVEL  v:
+PAR
+  button.press()
+  toggle()
+  pin.level()
+\end{lstlisting}
+
+Next, we need to give the {\PROCedure}s their parameters. We do this through a combination of reading the \plumbing library documentation\footnote{\url{http://concurrency.cc/docs/}} as well as studying the process network diagram.
+
+\newpage
+
+\bp takes a pin number and the sending end of channel, \toggle takes an initial level (which we set to \LOW), two channel ends (the receiving end of {\code s} and the sending end of {\code v}), and \pinlevel takes a pin and the receiving end of {\code v}.
+
+\vspace{3mm}
+\begin{lstlisting}
+CHAN SIGNAL s:
+CHAN LEVEL  v:
+PAR
+  button.press(2, s!)
+  toggle(LOW, s?, v!)
+  pin.level(13, LOW, v?)
+\end{lstlisting}
+
+The last step is to wrap everything up in a {\code main()} \PROCedure. This is the same thing we did in Chapter~\ref{ch4}.
+
+\vspace{3mm}
+\begin{lstlisting}
+PROC main ()
+  CHAN SIGNAL s:
+  CHAN LEVEL  v:
+  PAR
+    button.press(2, s!)
+    toggle(LOW, s?, v!)
+    pin.level(13, v?)
+:
+\end{lstlisting}
+
+Once again we have studied a process network and converted it into code based on our understanding of what the diagram means. 
+
+\section{What does \toggle do?}
+
+Toggle is new to us in this chapter. It takes in a \SIGNALT, and outputs a \LEVELT. If you focus your attention on \toggle only (Figure~\vref{diagram:ch5-just-toggle}), you'll see that it has one channel coming in from the left, and one channel going out on the right. The \toggle process waits until it receives a \SIGNALV on the channel {\code s}; when it does, it sends out a message on the channel {\code v}. 
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[width=\linewidth]{images/ch5-just-toggle}
+    \caption{Toggle has one channel in, and one channel out.}
+    \label{diagram:ch5-just-toggle}
+  \end{center}
+\end{figure}
+
+\toggle is kinda cool. Up until this chapter, we have only seen {\SIGNALT}s. Now, we have {\LEVELT}s. Digital pins on your Arduino can be set to either \HIGH or \LOW. When they are \LOW, they are off. When they are \HIGH, they are at +5 volts. \toggle starts off \LOW, and every time it receives a \SIGNALT, it flips its level and sends that value out. 
+
+\newpage
+
+We could say that \toggle follows the following three steps over and over:
+
+\vspace{3mm}
+\begin{enumerate}
+	\item \toggle waits until it receives a \SIGNALT, 
+	\item flips the value of its level,
+	\item sends out its new level, and 
+	\item goes back to step 1.
+\end{enumerate}
+
+If we ``unroll'' this loop a bit, we would say that \toggle:
+
+\vspace{3mm}
+\begin{enumerate}
+	\item waits for a \SIGNALT on channel {\code s},
+	\item flips from \LOW to \HIGH,
+	\item sends \HIGH out on channel {\code v},
+	\item waits for a \SIGNALT on channel {\code s},
+	\item flips from \HIGH to \LOW,
+	\item sends \LOW out on channel {\code v},
+	\item ...
+\end{enumerate}
+
+You could say that \toggle turns {\SIGNALT}s into messages that have a value, and those values are used to turn a pin on (\HIGH) and off (\LOW).
+
+\newpage
+
+\section{Pattern: A Pipeline}
+\plumbing programs are all about networks of processes sending information to each-other using channels. Channels are (we're sorry) the {\em plumbing} that makes our programs work. In the previous chapter, you saw how \bp sent a \SIGNALV to the process \tp, which then turned the built-in LED on and off. As it turns out, this whole network of processes is like a {\em pipeline} that carries information from one stopping point to the next.
+
+\vspace{3mm}
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[width=\linewidth]{images/scotland-pipeline}
+    %\caption{Toggle has one channel in, and one channel out.}
+    \label{image:scotland-pipeline}
+  \end{center}
+\end{figure}
+
+\newpage
+
+%the process \tp is like a set of nesting Russian dolls: we can break it open, and find two more processes inside.
+
+A pipeline carries stuff from one place to another. When we string multiple processes together in a straight line, we have constructed a {\strong pipeline} of processes. It is, essentially, an assembly line, where each process processes some information, and then passes the result of that work along. In \plumbing, each process has to wait for information from the ``upstream'' process; that is, \pinlevel waits for messages from \toggle, and \toggle waits for messages from \bp. In technical terms, this would be called a {\em buffered, synchronous} pipeline.\webnote{http://en.wikipedia.org/wiki/Pipeline_(computing)}{pipelines in computing}. 
+
+The Pipeline is one of the simplest patterns for processing information in parallel. It shows up everywhere, from the command-line on Linux, to the way a web server handles requests from your web browser, to the central processing unit in your computer. The Pipeline is one of the Big Ideas in computing.
+
+\ \\
+
+Congratulations. You've just explored it on your Arduino.
+
+\newpage
+
+\section{Explorations and Breakage}
+One thing you can do is to explore the \plumbing library a bit at this point. There are many processes in the \plumbing library; one you haven't seen yet is called \il. It takes in a \LEVELT value on one channel and outputs the opposite value on another. That is, it has a \LEVELT channel coming in, and a \LEVELT channel going out. Try using it in your process network---it only fits in one place.
+
+Or, you can explore how you can break this code. It may seem like we come up with lots of ways to break your code at the end of every chapter. That's because we want you to experience as many errors as possible in a controlled way before we set you free.
+
+\begin{description}
+	\item[Wrong channel types]\ \\
+	What happens if you take the code we started with and swap around \SIGNALT and \LEVELT on lines 2 and 3? Do things still work?
+	\item[Wrong channel order]\ \\
+	Modify line 7 so that \toggle has its read and write channels in the wrong order. That is, flip it from {\code (s?, v!)} to {\code (v!, s?)}.
+	\item[Wrong channel directions]\ \\
+		Modify line 7 so that \toggle has its read and write channels are pointing in the wrong direction. That is, flip it from {\code (s?, v!)} to {\code (s!, v?)}. (Subtle, no? Don't worry. If you draw pictures first, this is a difficult mistake to make.)
+  \item[Wrong pin number]\ \\
+	What happens if you have the wrong pin number in either \bp or \digo?
+	\item[Initial state flip]\ \\
+	What happens if you change \digo so that it starts with \HIGH instead of \LOW?
+	\item[Forgetting a process]\ \\
+	What happens if you simply remove \toggle? (Draw a new version of the process network from this chapter, and leave out \toggle. Does that look right? This is what happens when you remove line 7 from your program!)
+\end{description}	
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Removed/edited above. Some pulled up, some thrown out.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{comment}
 
 \CODE
 \lstinputlisting[caption=Peeling away the layers of \tp.,label=code:inside-toggle]{code/inside-toggle.occ}
@@ -29,7 +202,7 @@ Look at the process network (Figure~\vref{diagram:ch5-process-network}) once mor
 
 If you focus your attention on \toggle only (Figure~\vref{diagram:ch5-just-toggle}), you'll see that it has one channel coming in from the left, and one channel going out on the right. The \toggle process waits until it receives a \SIGNALV on the channel {\code s}; when it does, it sends out a message on the channel {\code v}. 
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \begin{center}
     \includegraphics[width=\linewidth]{images/ch5-just-toggle}
     \caption{Toggle has one channel in, and one channel out.}
@@ -91,5 +264,5 @@ It may seem like we come up with lots of ways to break your code at the end of e
 	What happens if you simply remove \toggle? (Draw a new version of the process network from this chapter, and leave out \toggle. Does that look right? This is what happens when you remove line 7 from your program!)
 \end{description}	
 	
-	
+\end{comment}	
 

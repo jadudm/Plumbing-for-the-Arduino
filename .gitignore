@@ -6,6 +6,10 @@
 # Specific files
 book.pdf
 20100111-plumbing-book.pdf
+book.py
+book.py.err
+latex.py
+plumbing-for-the-arduino.pdf
 
 # Specific directories
 packages
