@@ -34,7 +34,9 @@ Once you have JEdit open, you can write your first program. The first step is to
 \lstinputlisting[%caption=The {\code heartbeat} should always be beating.,
 label=code:heartbeat]{code/heartbeat.occ}
 
-Type the above program into JEdit. Note that there are some spaces hidden there. Here's the same program, but with the spaces clearly marked:
+Type the above program into JEdit. Note the first line: the {\code INCLUDE} line brings in all of the code that we call ``Plumbing.'' We won't always show this line, but {\strong you need it at the start of every one of your programs}.
+
+Note that there are some spaces hidden there. Here's the same program, but with the spaces clearly marked:
 
 %\CODE
 \lstinputlisting[%caption=The {\code heartbeat} with spaces shown.,
@@ -59,7 +61,7 @@ Your code is human-readable. (You may not feel that way yet, but it is.) We need
 
 Once you have the occPlug extension running, you can compile and run your program. When you press the round arrow on the left, our tools first check to see if your code is grammatically correct, and then transform your code into something that will run on the Arduino. If you made any mistakes in typing in your program, this is where you'll get one or more seemingly incomprehensible errors. Think of them not as ``errors'' but instead as ``learning opportunities.''
          
-\newpage
+%\newpage
                                 
 % XXX Need to cover how we select which Arduino in the plugin...
 If you code compiled, you'll see a message that looks something like this:
@@ -106,7 +108,7 @@ You will see a lot of \PROCedure definitions while you are using \plumbing, beca
 While it may seem daunting to have all the rules spelled out that way, we're trying to be clear and help you see that programming is not so much a mystery as it is a matter of following rules. Every program you write will end with a \PROC that out of habit you might call {\code main}. That is because the \PROC at the end of your program is the first one that will be run by your Arduino. % ``And, behold, there are last which shall be first...''
 
 \subsection{A \PROCedure Call}
-Look again at line 2 of our first program:
+Look again at line 4 of our first program:
 
 \lstinputlisting[]{code/heartbeat.occ}
 
@@ -127,6 +129,8 @@ With every new piece of code or pattern, there are a dozen ways to break it. Bec
 
 Further, it is important to note that we are encouraging you to explore common errors made by many people learning to program in all languages. As it happens, we're pretty comfortable programming in \occam---which is why we know about these errors. Put simply, {\strong these are mistakes we still make}. I guess we're trying to say that there is no shame in these kinds of programming errors... and our hope is that, by exposing you to these errors directly, it will help reduce some of the frustration that sometimes accompanies learning new things. Go to it!
 
+\newpage
+
 \begin{description}
   \item[Misspellings]\ \\ One of the most common errors made by beginning programmers in any language are typos and misspellings. What happens if you type {\code PRC} instead of {\code PROC}? {\code maim} instead of {\code main}? {\code hearbeat} instead of {\code heartbeat}?
 
@@ -140,6 +144,8 @@ Further, it is important to note that we are encouraging you to explore common e
 	
 	\item[Indentation]\ \\ What happens if you indent the body of the \PROC by one space instead of two? Three spaces? 
 \end{description}
+                
+\newpage
 
 \subsection{Programming Strategies}
 Remember, learning to program in any language can be a frustrating experience. Here are a few tools you can use to help clear the hurdles you might encounter:
@@ -149,7 +155,7 @@ Remember, learning to program in any language can be a frustrating experience. H
 	\item[Attention to Detail]\ \\ Spaces matter in \plumbing, and they are {\em invisible}. Be careful about what you do, and begin learning to look with the eyes of a programmer: start looking for patterns and the invisible parts of your code.
 	\item[Take Notes]\ \\ As you discover new kinds of mistakes you've made, take the time to make note of them, as well as your analysis of how you fixed them. Eventually, you won't need to make the notes, because you'll make fewer mistakes.
 	%\item[Take Breaks]\ \\ While programming and hacking are fun, sometimes you can get stuck. Talk to an old friend on the phone. Do something else, and let your mind work on the problem in a different space.
-	\item[Take a Walk]\ \\ ...or a roll, or whatever mode of locomotion you have available to you. You should especially do this if the weather outside is your particular favorite. Let your mind wander as you wander the outdoors.
+	\item[Take a Walk]\ \\ ...or a roll, or whatever. You should especially do this if the weather outside is your particular favorite. Let your mind wander as you wander the outdoors.
 	\item[Take a Shower]\ \\ Or do whatever relaxes you and breaks your routine. Perhaps you prefer a bubble bath? Either way, don't forget your rubber duckie.
 \end{description}
 
