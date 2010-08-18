@@ -1,0 +1,44 @@
+Servo Chapter 2 - Sequentially Setting that Servo
+	Getting that servo set to a single degree wasn't much of a problem at all. Can't be said to have been terribly useful either, though. In this chapter, we're going to be taking a look at how we can set that servo to a number of positions, one at a time.
+
+GOALS
+	1 To understand how sequential code can be incorporated into parallel processes
+	2 To get that servo set to a series of positions, in order.
+
+THE CIRCUT
+	Because we're still just going to be using our servo, the circut from the last chapter [that chapter] isn't going to change at all. But just in case you'd like to make sure the right wires are plugged into the right pins, here's the diagram we used last time as a reference.
+		[[CIRCUT DIAGRAM]]
+
+THE CODE
+	Because we're build directly off what we did in the last servo chapter, the leaping-off point for this lesson is exactly where we left off from last lesson. The first thing we should do is pull the completed code from chapter [whatever] over so we can start expanding it.
+		[[CODE]]
+		PROC main ()
+		  CHAN BYTE pos.chan:
+		  PAR
+		    simple.servo(11, pos.chan?)
+		    pos.chan ! 45
+		:
+
+	We're actually not going to be touching the first four lines of this code until servo chapter 6. Our BYTE channel and simple.servo aren't going anywhere, and that PAR is what's letting us communicate with the servo, so it's not going to be going anywhere either. With this in mind, it should be clear that our network diagram really isn't going to be changing.
+		[[SILLY NETWORK DIAGRAM]]
+	What we want to be doing -- sending a series of positions down pos.chan -- is all going to be taking place in our unnamed process. We're going to be setting that servo to each of our desiered positions by hand.
+		[[SILL N.D. WITH SEQUENTIALITY]]
+
+	We've spent all of this book exploring what we can do at the same time -- which is awesome. Plumbing was built to make the construction of concurrent software easy, so focusing on that is what this book is all about. Sometimes, though, we do need to worry about performing a number of actions in an order, and getting those tasks done in that order as simply as possible is an important task. As always, Occam-pi comes pre-packages with a very simple solution.
+	By now, I'm assuming we've become very comfortable with the structure of PAR. We declare that we're going to be performing a number of processes in parallel by writing PAR, and then we place all of the processes we want active under that PAR with a couple spaces to their left.
+		[[DIAGRAM]]
+	     in	PARalell
+		__the.first.process()
+		__a.second()
+		__and.a.thrid()
+		__proc.number.four()
+
+	All we need to do to make those process execute one after ther other -- execute *sequentially* -- is replace the three letters PAR, with SEQ.
+		[[DIAGRAM]]
+	     in	SEQuence
+		__the.first.process()
+		__a.second()
+		__now.a.thrid()
+		__proc.number.four()
+
+	
