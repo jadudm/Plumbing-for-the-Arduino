@@ -4,7 +4,7 @@ CHAPTER 1 Move a servo to a single position
 PROC main ()
 * CHAN BYTE pos.chan:
   PAR
-    simple.servo (11, 800, 2200, position?)
+    simple.servo (11, position?)
 *   pos.chan ! 45
 :
 	LESSONS:
@@ -16,7 +16,7 @@ CHAPTER 2 Move a servo to a number of positions
 PROC main ()
   CHAN BYTE pos.chan:
   PAR
-    simple.servo (11, 800, 2200, position?)
+    simple.servo (11, position?)
 *   SEQ
 *     delay (500)
       pos.chan ! 180
@@ -34,7 +34,7 @@ PROC main ()
   CHAN BYTE pos.chan:
 * BYTE position:
   PAR
-    simple.servo (11, 800, 2200, position?)
+    simple.servo (11, position?)
     SEQ
       delay (500)
       position := 180
@@ -51,7 +51,7 @@ PROC main ()
   CHAN BYTE pos.chan:
   INITIAL BYTE position IS 180:
   PAR
-    simple.servo (...)
+    simple.servo (11, pos.chan?)
 *   WHILE TRUE
       SEQ
         delay (10)
@@ -69,7 +69,7 @@ PROC main ()
   CHAN BYTE pos.chan:
   INITIAL BYTE position IS 180:
   PAR
-    simple.servo (...)
+    simple.servo (11, pos.chan?)
 *   WHILE position > 0
       SEQ
         delay (10)
@@ -80,11 +80,11 @@ PROC main ()
 	  An actual look at conditionals
 	  Binary operations (I'm thinking a side-bar touching on the basics. No ORs or ANDs yet.)
 
-CHAPTER 4/5 A smooth motion with Replication (and all together now).
+CHAPTER 5 A smooth motion with Replication (and all together now).
 PROC main ()
   CHAN BYTE pos.chan:
   PAR
-    simple.servo (...)
+    simple.servo (11, pos.chan?)
 *   SEQ position = 180 FOR 180 STEP -1
       SEQ
         delay (10)
@@ -94,7 +94,7 @@ PROC main ()
 PROC main ()
   CHAN BYTE pos.chan:
   PAR
-    simple.servo (...)
+    simple.servo (11, pos.chan?)
     WHILE TRUE
       SEQ
         SEQ position = 180 FOR 180 STEP -1
@@ -109,7 +109,7 @@ PROC main ()
 	LESSONS
 	  Replicated SEQuence. That's really it, here. It's a big deal?
 
-CHAPTER 5/6 Back apart.
+CHAPTER 6 Back apart.
 Take a look at simple.servo.
 ... Well, okay, not all of it.
 
