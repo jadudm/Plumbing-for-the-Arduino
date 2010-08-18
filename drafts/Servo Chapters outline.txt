@@ -1,0 +1,151 @@
+Servo chapters
+
+CHAPTER 1 Move a servo to a single position
+PROC main ()
+* CHAN BYTE pos.chan:
+  PAR
+    simple.servo (11, 800, 2200, position?)
+*   pos.chan ! 45
+:
+	LESSONS:
+	  Hey look, CHANnels of type BYTE!
+	  Also, talking down channels.
+
+
+CHAPTER 2 Move a servo to a number of positions
+PROC main ()
+  CHAN BYTE pos.chan:
+  PAR
+    simple.servo (11, 800, 2200, position?)
+*   SEQ
+*     delay (500)
+      pos.chan ! 180
+      delay (500)
+      pos.chan ! 90
+      delay (500)
+      pos.chan ! 0
+:
+	LESSONS:
+	  The big thing here is the SEQuence.
+	  Delay is a relatively small thing to deal with
+
+CHAPTER 3 Move a servo more smoothly
+PROC main ()
+  CHAN BYTE pos.chan:
+* BYTE position:
+  PAR
+    simple.servo (11, 800, 2200, position?)
+    SEQ
+      delay (500)
+      position := 180
+      pos.chan ! position
+      delay (500)
+      position := 90
+	. . .
+:
+	MODIFIED TO
+INITIAL BYTE position IS 180
+
+	AND THEN
+PROC main ()
+  CHAN BYTE pos.chan:
+  INITIAL BYTE position IS 180:
+  PAR
+    simple.servo (...)
+*   WHILE TRUE
+      SEQ
+        delay (10)
+        position := position - 1
+        pos.chan ! position
+:
+	NOTE!!:: The hope here is that when we attempt to set position to -1, an error will be thrown.
+
+	LESSONS
+	  Variables. They're cool. Also, they can be initialized.
+	  Infinite loops. WHILE TRUE is TRUE. Because TRUE is TRUE, it'll just go.
+
+CHAPTER 4 Make that loop not break our code, maybe?
+PROC main ()
+  CHAN BYTE pos.chan:
+  INITIAL BYTE position IS 180:
+  PAR
+    simple.servo (...)
+*   WHILE position > 0
+      SEQ
+        delay (10)
+        position := position - 1
+        pos.chan ! position
+:
+	LESSONS
+	  An actual look at conditionals
+	  Binary operations (I'm thinking a side-bar touching on the basics. No ORs or ANDs yet.)
+
+CHAPTER 4/5 A smooth motion with Replication (and all together now).
+PROC main ()
+  CHAN BYTE pos.chan:
+  PAR
+    simple.servo (...)
+*   SEQ position = 180 FOR 180 STEP -1
+      SEQ
+        delay (10)
+        pos.chan ! position
+:
+	AND THEN
+PROC main ()
+  CHAN BYTE pos.chan:
+  PAR
+    simple.servo (...)
+    WHILE TRUE
+      SEQ
+        SEQ position = 180 FOR 180 STEP -1
+          SEQ
+            delay (10)
+            pos.chan ! position
+        SEQ position = 0 FOR 180 STEP 1
+          SEQ
+            delay (10)
+            pos.chan ! position
+:
+	LESSONS
+	  Replicated SEQuence. That's really it, here. It's a big deal?
+
+CHAPTER 5/6 Back apart.
+Take a look at simple.servo.
+... Well, okay, not all of it.
+
+PROC simple.servo
+  . . .
+  CHAN SERVO s:
+  PAR
+    servo (board.pin, s?)
+    SEQ
+      s ! min ; umin
+      s ! max ; umax
+      s ! start
+      . . .
+:
+
+Now we talk about Protocols vs Data Types, and what's going on with the tags here.
+Then we talk about the other tags we should be looking at? Those being \div\ and \pos\
+Then... rewrite the last big chunk using servo?
+
+PROC main ()
+  CHAN SERVO servo:
+  PAR
+    servo (11, servo?)
+    SEQ
+      servo ! min ; 800
+      servo ! max ; 2200
+      servo ! div ; 10
+      servo ! start
+      WHILE TRUE
+        SEQ
+          SEQ position = 0 FOR 10 STEP 1
+            SEQ
+              delay (20)
+              servo ! pos ; position
+          SEQ position = 0 FOR 10 STEP -1
+            SEQ
+              delay (20)
+              servo ! pos ; position
+:
