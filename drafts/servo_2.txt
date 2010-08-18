@@ -41,4 +41,50 @@ THE CODE
 		__now.a.thrid()
 		__proc.number.four()
 
-	
+	With that done, the SEQ containing /any number/ of other processes to be performed in order, can essentially be seen as a single process to any PAR or SEQ statement the new one is under. This is why we can keep our original network diagram the same even though we're adding two more message-sending processes to the program. As far as our PAR is concenred, there are still two processes being run concurrently.
+		[[COMPOUND NETWORK DIAGRAM]]
+
+	So to set our servo to three distinct positions, one after another, we simply need to send three messages down pos.chan, one after another. Say we want to go from 180 degrees down to 0 in three steps, we'd first replace our original message down pos.chan with a SEQ statement.
+		[[CODE]]
+		PROC main ()
+		  CHAN BYTE pos.chan:
+		  PAR
+		    simple.servo(11, pos.chan?)
+		    SEQ
+		:
+
+	And under that SEQ statement -- making sure to add the extra indentations as one would with a PAR staetment -- we'll add the three message sends, and...
+		[[CODE]]
+		PROC main ()
+		  CHAN BYTE pos.chan:
+		  PAR
+		    simple.servo(11, pos.chan?)
+		    SEQ
+		      pos.chan ! 180
+		      pos.chan ! 90
+		      pos.chan ! 0
+		:
+
+	We got it!... Kind of. You really don't see much of the servo being at any angle save 0, do you?
+	That's because under a SEQ, the processes are completed as quickly as they're completed. The moment the first process is finished, the second one begins. While this can lead to cases where the second process never completes, causing the third to never start and your whole program to collapse, this also makes for circumstances such as this, where processes finish too quickly for the combination to be practical, or aesthetically pleasing, or... whatever else.
+	For cases such as this, we've included a very self-explanitory process designed to slow down the execution of sequential processes. It's called delay. It takes one parameter, which is the number of milliseconds (remember, milli = 10^-3 * Base, so 1000 milliseconds is one second) you'd like your program to delay when it his the delay. Pretty simple, no?
+	So let's toss in a few delays set at half a second so we can really see where 180, 90 and 0 are on our servo.
+		[[CODE]]
+		PROC main ()
+		  CHAN BYTE pos.chan:
+		  PAR
+		    simple.servo (11, pos.chan?)
+		    SEQ
+		      delay (500)
+		      pos.chan ! 180
+		      delay (500)
+		      pos.chan ! 90
+		      delay (500)
+		      pos.chan ! 0
+		:
+
+	One of those double-edged-sword bits you need to keep in mind when you're using delay is that it will not stop your entire program when a delay is hit. It will only delay the SEQuential process it's a part of. In the case of our program, simple.servo is never going to stop running. It will sit there contenditly waiting for the next message to come down no matter what's happening in our SEQuential process. There will be a half-second delay between simple.servo recieving the first BYTE sent down pos.chan, and the second BYTE being sent.
+
+BREAKAGES
+
+
