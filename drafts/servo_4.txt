@@ -1,0 +1,18 @@
+Servo Chapter 4 - Well, It's Mostly working...
+	We have some code that will swing that servo in an arch. There is no doubt about that. We also have some code that pretty beautifully crashes after about a two seconds of running. Again, this is in no way bad for your Arduino, but we should probably try to find out what's causing it and, well... Fix it.
+
+GOALS
+	1 To build a few tools for helping us find and fix bug is our code
+	2 Explore why exactly the code we've been working with broke
+	3 Take another look at WHILE loops to see how we can write one that doesn't keep going indefinitely.
+
+THE CIRCUT
+	Same circut as we've been using. Again, have a pretty picture.
+		[[CIRCUT DIAGRAM]]
+
+THE CODE
+	Well, what we're actually going to be looking at first is the broken.
+	When we run the code we drafted up last chapter, everything goes smoothly untill the servo gets to one of its extreems, then the servo stops moving, and [[A THING HAPPENS HERE WITH JEDIT OR WHATEVER WITH AN ERROR SHOWING UP]]
+		[[A PICTURE OF THE ERROR!!]]
+
+	This is, as you might have been able to deduce, and error message. Let's take a look at it [[WHEN DREW IS ACTUALLY LOOKING AT THE ERROR MESSAGE AND CAN PULL IMPORTANT BITS OUT 
