@@ -92,6 +92,75 @@ THE CODE
 
 		[[DIAGRAM]]
 		WHILE TRUE
-		  looped.process
+		  looped.process (...)
 
-	Say hello to the *infinite WHILE loop*.
+	This is what's called an *infinite WHILE loop*. I'm guessing you've an intuative idea of what this loop does just by hearing what it's called, and so I'll just say that this loop will repeat the given process indefinitely. It essentially creates a loop in the code where the bottom of the WHILE statement flows, instead of code bellow the WHILE, back to the top of the loop.
+	As you can see, the syntax for WHILE statements (of which this WHILE TRUE statement is something of a speical case) is very similar to PAR and SEQ statements. On the line immediately below the WHILE, you need to indent the process to be looped two additional spaces. What really differentiates the syntax of loops from SEQs and PARs is that there can only be one process below the loop. It can (and most often is) a SEQ or PAR that combines a number of additional processes or operations to be looped, so there's really not a restriction there. We just need to be sure to specify if we want our looped processes to be performed in PARallel or in SEQuence.
+
+	So to integrate such a loop into our code, we need to look at what we need it to do -- what are we repeatedly doing that can be looped. Looking back at the code we have thus far, it's pretty clear we recalculate position, wait for a period, and then send the new position down pos.chan. This sequence of commands is repeated three times and makes for a lot of boring repition in the code, as well as a very jerky motion of the servo. So lets take the basics and smooth things out with a WHILE TRUE loop.
+	First we need to actually add that piece of syntax to the code, and since we're going to be performing a series of commands one after another, we're going to specify that the process to be looped is a SEQ.
+		[[CODE]]
+		PROC main ()
+		  CHAN BYTE pos.chan:
+		  BYTE position:
+		  PAR
+		    simple.servo (11, position?)
+		    WHILE TRUE
+		      SEQ
+		:
+
+	Note that the SEQ there is indented two spaces pas the WHILE, and the next few command we place are going to be indented a couple more past the SEQ.
+	The first command we need to replace is recalculating positon. Because we're going to be looping for as long as we want, let's only decrement position by 1, instead of 90.
+		[[CODE]]
+		PROC main ()
+		  . . .
+		    WHILE TRUE
+		      SEQ
+		        positon := position - 1
+
+	Now then, we need to wait for a bit to make sure we see the servo move, so let's add a delay that's only set to 20 milliseconds because waiting half a second to watch a servo move a single degree doesn't sound that interesting to me.
+		[[CODE]]
+		PROC main ()
+		  . . .
+		    WHILE TRUE
+		      SEQ
+		        positon := position - 1
+		        delay (20)
+
+	And finally we add that communication down pos.chan.
+		[[CODE]]
+		PROC main ()
+		  CHAN BYTE pos.chan:
+		  BYTE position:
+		  PAR
+		    simple.servo (11, position?)
+		    WHILE TRUE
+		      SEQ
+		        positon := position - 1
+		        delay (20)
+		        pos.chan ! position
+		:
+
+	So that code is looking pretty good. There's a pretty big problem I've made for us, though, by removing the statment that actually defined the first value of position. We could solve this with another SEQ that would fist set position, then run the WHILE loop, or we can modify the declaration of position. Whenever we declare a variable, we can define an initial value for it using the keyworks INITIAL and IS.
+		[[CODE]]
+		PROC main ()
+		  CHAN BYTE pos.chan:
+		  INITIAL BYTE position IS 180:
+
+	You can almost read that line of code out loud and make it sound like a coherent statement. Be sure that when you initialize a variable, the order of keywords is always as it appears above, though.
+		[[DIAGRAM]]
+		INITIAL <datatype> <name> IS <value>:
+
+	It took a while to get here, but when we put all of this code together we finally have a much smoother sweep of our servo, in far fewer lines than when we started. Loops and variables. Good stuff.
+		[[CODE]]
+		PROC main ()
+		  CHAN BYTE pos.chan:
+		  INITIAL BYTE position IS 180:
+		  PAR
+		    simple.servo (11, position?)
+		    WHILE TRUE
+		      SEQ
+		        positon := position - 1
+		        delay (20)
+		        pos.chan ! position
+		:
