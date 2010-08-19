@@ -1,0 +1,97 @@
+Servo Chapter 3 - While We Smooth Things Out...
+	We have a sequentially executing series of commands that sets the servo to three positions, one after another. How cool is that? Not cool enough? I agree with you on that. Lets take a look at how we can write less code to get a finer grained control over the position of a decending servo.
+
+GOALS
+	1 Take a look at an amazing thing known as /a variable/.
+	2 Find out what loops can do for you.
+	3 Get that servo stepping down smoother, for less.
+
+THE CIRCUT
+	Same as last chapter, we're still just going to be working with the servo. Here's the diagram for reference.
+		[[CIRCUT DIAGRAM]]
+
+THE CODE
+	So, fist thing's first. The goal here is to do what every good computer programer strives to do every day; as little work as possible.
+	We have in front of us an Arduino. An piece of embedded hardware. A tiny computer. It's whole shtik is computing things. Doing math. I say, lets take advantage of the fact that these little guys like doing math, and stop doing it ourselves.
+
+	The first step we need to take is to tell our program what it ought to be doing math on. For this, we're going to have to declare a variable.
+		[[DIAGRAM.. or code?]]
+		BYTE position:
+
+	As you can see, declaring a variable is nearly the same as declaring a channel. The only difference between channel declarations and variable declarations is that you don't declare variables with the CHAN keyword, which... is appropriate. Seeing as variables aren't CHANnels. Variable declarations go in the same place as channel declarations, and so long as the variable declarations come before any processes (remember, PARs and SEQs can be seen as processes), order doesn't matter.
+	There is a rather simple but drastic conceptual difference between variables and channels, though. Channels have been used to communicate information. We're about to use variables to store information. Most recently we've used a singe BYTE channel to communicate a range BYTEs. We are now about to use a single BYTE variable to store a range of BYTEs. Variable are named variables because their value is variable. You can store any number between 0 and 255 in a variable of type BYTE, and change that variable at any time during a program's opperation, allowing you to access a different number by calling on the same name.
+
+	Let's look at some code that takes advantage of a a variable to set the position of a servo. This code is going to function exactly like the code we left off with in the last chapter, save that there are going to be a few extra lines that will become less superfluous in the second half of this chaper.
+	First we're going to add that position BYTE into our declarations portion of the code.
+		[[CODE]]
+		PROC main ()
+		  CHAN BYTE pos.chan:
+		  *BYTE position:*
+		  PAR
+		    simple.servo (11, position?)
+		    SEQ
+		      delay (500)
+		      pos.chan ! 180
+		      . . .
+		:
+
+	Now that we have a BYTE variable, we need to use it. I told you variables are used to store information. I haven't told you how that information gets stored. I figured it will be easier to show you.
+		[[CODE]]
+		PROC main ()
+		  CHAN BYTE pos.chan:
+		  *BYTE position:*
+		  PAR
+		    simple.servo (11, position?)
+		    SEQ
+		      *position := 180*
+		      delay (500)
+		      pos.chan ! 180
+		      . . .
+		:
+
+	There you go. You've now declaired and set a variable in Occam-pi. Note that the /assignment/ operation (variable.name *:=* value) occurs within the SEQ statement, and has no trailing ':' that follows any standard declaration.
+	Now that position's been set in the sequence, it can be used in place of any other BYTE, or a new value can be re-assigned to it. Let's just go ahead and do both of these thigns in the next change to our code.
+		[[CODE]]
+		PROC main ()
+		  CHAN BYTE pos.chan:
+		  BYTE position:
+		  PAR
+		    simple.servo (11, position?)
+		    SEQ
+		      position := 180
+		      delay (500)
+		      *pos.chan ! position*
+		      *position := (position - 90)*
+		      . . .
+		:
+
+	And that's how we work with variable. I'm sure it caught your eye that in that second assignment of position, we actually used position to find a new value for position. That right there is one of the powerful tools we can take advantage of using variables.
+	In that statement we're not actually saying 'position := position - 90' because of the Order of Operations. Now how's that for a blast back to High School Alegbra? It's a very important blast from the past for most of us though, because the order that the operations in that stament (plural because there are two operations there) occur makes a crucial difference to the new value of position. In that line of code, the first operation  that resolves (because it's in parenthesis) is 'position - 90'. With position equal to 180, the math works out to 180 - 90 = 90. Only then do we set position's new value to 90, and we're back to the races.
+
+	Let's go ahead and make sure that we send nothing but position down pos.chan (see how the naming scheme worked out?) so that we can see that the code we wound up with last chapter can function just fine if we use nothing but variables. And let's keep assigning position relative to its own value, because that's always fun.
+		[[CODE]]
+		PROC main ()
+		  CHAN BYTE pos.chan:
+		  BYTE position:
+		  PAR
+		    simple.servo (11, position?)
+		    SEQ
+		      position := 180
+		      delay (500)
+		      pos.chan ! position
+		      position := (position - 90)
+		      dealy (500)
+		      pos.chan ! position
+		      position := (position - 90)
+		      dealy (500)
+		      pos.chan ! position
+		:
+
+	There we go. Back to working order, only this time we're using a BYTE variable to know and find what value to pass down our BYTE channel.
+	Only... That's not so good, really. We've not yet improved the functionallity of our code by implimenting all this with variable; in fact, all we've managed to do is make our code more complex. Though those last few steps seem to hardly be productive at this moment, when combound with this next piece of the Occam-pi language, it will become clear why we should make liberal use of variables, and how doing so can save us time.
+
+		[[DIAGRAM]]
+		WHILE TRUE
+		  looped.process
+
+	Say hello to the *infinite WHILE loop*.
