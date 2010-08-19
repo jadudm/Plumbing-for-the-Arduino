@@ -164,3 +164,9 @@ THE CODE
 		        delay (20)
 		        pos.chan ! position
 		:
+
+
+	And when we run this code, our Arduino crashes. And I was actually counting on that.
+	Let me first assuage any fears you may have -- this error, and the cause thereof, cannot hurt your Arduino. This is actually the code doing exactly what it should be doing under these circumstances. In the next chapter, I'll break down exactly why this code crashes when and the way it does, as well as explore with you a few ways of troubleshooting code that throws errors on execution. For now, I encourage you to play around with the code that's here, try to figure out why it's crashing the way it is.
+
+	*There is one thing you should not do though*. As soon as we add some sanity checks to the servo (..) process, this won't matter so I'm not sure if I should even be wasting the finger-motion to write this paragraph, but whatever. Do not try to fix this error by starting position at 0 and driving it up instead of down. If you do this, you'll be telling your servo to move past its limits. And that would be a no good, very bad thing.

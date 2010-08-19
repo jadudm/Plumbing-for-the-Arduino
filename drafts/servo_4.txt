@@ -10,9 +10,36 @@ THE CIRCUT
 	Same circut as we've been using. Again, have a pretty picture.
 		[[CIRCUT DIAGRAM]]
 
-THE CODE
-	Well, what we're actually going to be looking at first is the broken.
+THE CODE (that's broken)
 	When we run the code we drafted up last chapter, everything goes smoothly untill the servo gets to one of its extreems, then the servo stops moving, and [[A THING HAPPENS HERE WITH JEDIT OR WHATEVER WITH AN ERROR SHOWING UP]]
 		[[A PICTURE OF THE ERROR!!]]
 
-	This is, as you might have been able to deduce, and error message. Let's take a look at it [[WHEN DREW IS ACTUALLY LOOKING AT THE ERROR MESSAGE AND CAN PULL IMPORTANT BITS OUT 
+	This is, as you might have been able to deduce, an error message. Let's take a look at it [[WHEN DREW IS ACTUALLY LOOKING AT THE ERROR MESSAGE AND CAN PULL IMPORTANT BITS OUT]]
+	Important things to note:
+		The line the error message comes from
+
+	Because of how small the Arduino is, error handling is necessarilly very rudimentary. An error is raised when the code that's executing tries to do something the transterpreter (because that's what's doing a lot of the heavy lifiting) or the hardware is incapable of actually doing. When this happens, execution of the program -- of all the processes, not just the process in which the error was raised -- stops. The best the Transterpreter do when this happens is pinpoint where in the code the error was raised. Often times, though, where the error was raised -- where something actually broke the rules -- isn't where the flaw in our program is. Where the error was raised is simply where the hardware found the fault. To exaserbate this, there's also no way for the transterperter to tell us what exactly went wrong once execution has stopped. It's always up to us to figure out what went wrong.
+
+	In this particular case, the transterpreter has done well figuring out where we went wrong. Looking at the line of code suggested by the error message, we can see exactly what went wrong.
+		[[CODE]]
+		    WHILE TRUE
+		      SEQ
+		        positon := position - 1
+
+	We're in an infinite loop here. Every cycle -- ever pass through the code in the loop -- we decrease the value of position by one. position is a variable of type BYTE. BYTEs can only hold values between 0 and 255. Because position starts out with a value of 180, and this loop well keep going forever (if it has its way, that is), we relatively quickly find ourselves in a position where position has the value of 0. The next time we try to decriment that variable, we're trying to assign postion a value that can't be expressed as a BYTE. And that's where the error comes from.
+
+THE CODE (now fixed)
+	To get out of this bind of hitting the lowest value of a BYTE and then crashing our code when we try to get lower, we're going to revist that WHILE TRUE loop. We're actually going to turn it into a more sane WHILE loop.
+
+	When I first introduced the WHILE TRUE loop, I only concentrated on two elemts of that syntax; the WHILE TRUE statement, and the line of code that goes under it. As you can see from the syntax highlighting, there are actually three seprate elements of a WHILE loop.
+		[[DIAGRAM]]
+		WHILE TRUE
+		  looped.process (...)
+
+	The general form of a WHILE loop shouldn't include that TRUE keyword. What should be there is a generic *conditional statement*.
+		[[DIAGRAM]]
+		WHILE <conditional>
+		  looped.process (...)
+
+	A conditional statement is something of a new concept. It's sort of like a piece of code that can be reduced, that can be solved -- but only when the code is executing. If we remember back to when we were messing with the position variable, when we used the current value of position to find a new value, we had to reduce an equation such as (position - 1) to a number before it could be assigned to a variable. In that same way, conditionals remain equations -- algorithms, until they're encountered during execution at which point their value is found, and depending on that value the behavior of the code changes.
+	WHILE loops, you see, aren't usually infinite loops. The conditional that's a part of such a loop is checked every time the loops starts back at the top. Conditionals only ever reduce to a value of FALSE, or a value of TRUE. When the conditional of a WHILE loop reduces to FALSE, the loop stops looping.  By writing WHILE TRUE, we weren't giving the conditional a chance to ever be FALSE, so the loop never exits.
