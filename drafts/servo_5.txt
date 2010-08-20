@@ -1,0 +1,116 @@
+Servo Chapter 5 Condese, Replicate, and Repeate.
+	So we really have everything working at this point. We have a servo that swings from back to forth -- and we're doing it without crashing our code at the end of it all. There's one last bit of new Occam-pi syntax we've been working up towards, and with everything we've see thus far -- loops, variable and conditionals -- it should be no problem getting to understand the *replicated SEQuence*.
+
+GOALS
+	1 Learn about how the replicated SEQ combines much of what we've seen so far pertaining to servos.
+	2 Use a replicated SEQ to simplify what we've already gotten working.
+	3 Combine WHILE loops, SEQs and replicated SEQs to do even more with our servo.
+
+THE CIRCUT
+	Again, we're still playing with the same circut we've been using. Hope you're not bored of this diagram.
+		[[CIRCUT DIAGRAM]]
+
+THE CODE
+	The WHILE loop is a powerful tool. But its not the only loop we have available to us. [[I NEED SOME MORE JUSTIFICATION FOR MOVING TO REPLICATED SEQS]]
+	The replicated SEQ has a syntax somewhat more complicated than anything we've seen thus far, so we'll start with the basics.
+		[[DIAGRAM]]
+		SEQ <grey box> <grey box> <grey box>
+		  replicated.process (..)
+
+	There's more to a replicated SEQ than this, but these are the barebone basics. Just like a SEQ, the process bellow the SEQ statement need to be indented two spaces, but unlike the standard SEQ (and like all other loops in the Occam-pi language), there can be only one process directly under a replicated SEQ -- same as WHILE loops though, it is often a SEQ statement that's placed under the replication. 
+		[[DIAGRAM]]
+		SEQ int.name = value | <grey box> <grey box>
+		  replicated.process (..)
+	So this next piece of the puzzle should look pretty similar to you. Immediately after declaring the SEQ of a replicated SEQ, you need to declare a variable of type INT. Just like with any variable, the name can be just about anything under the sun, but the value needs to be numerical. Because the variable in replicated SEQs is always an INT, we're not limited by the 0 to 255 range that BYTES are held to. Make especial note that the '=' does not have a ':' leading it.
+		[[DIAGRAM]]
+		SEQ int.name = value | FOR replications | <grey box>
+		  replicated.process (..)
+	In replications, you specify how many times you want this SEQuence to be replicated. It's a simple enough concept, but catches a lot of people off guard because replications isn't concerned with anything but itself, but the rest of the replication logic hinges on that number. Here's how.
+		[[DIAGRAM]]
+		SEQ int.name = value | FOR replications | STEP step.distance
+
+	At the end of each replication, int.name gets stepped by step.distance. You can think of it as though the replicated SEQ appends the line of code int.name := (int.name + step.distance) to the end of whatever code you have under the replicated SEQ. The value of step.distance can be positive or negative, and it's actually wholly optional to explicitly define step.distance. If you don't include 'STEP step.distance' in your replicated SEQ statment, step.distance defaults to 1.
+
+	So including this in the code that we had working from the end of last chapter is going to be incredibly easy.
+		[[CODE]]
+		PROC main ()
+		  CHAN BYTE pos.chan:
+		  INITIAL BYTE position IS 180:
+		  PAR
+		    simple.servo (11, position?)
+		    WHILE TRUE
+		      SEQ
+		        positon := position - 1
+		        delay (20)
+		        pos.chan ! position
+		:
+
+	We no loger need that definition of position to remain above the loop, and we can simply get rid of the decrementation statement. The WHILE statment is then going to be replaced by a full replicated SEQ statement, and that's really it for the changes.
+		[[CODE]]
+		PROC main ()
+		  CHAN BYTE pos.chan:
+		  PAR
+		    simple.servo (11, position?)
+		    SEQ position = 180 FOR 180 step -1
+		      SEQ
+		        delay (20)
+		        pos.chan ! position
+		:
+
+	There's one last change we need to add to make this all work though. In any replicated statement, the variable declaired is going to be of the type INT. Our pos.chan that we're talking to our servo with is a BYTE CHANnel. INTs can't be passed down BYTE channels. Just won't do. What we need to do in this sort of case is *cast position from an INT to a BYTE*. Don't ask me why it's called casting, I really don't know.
+		[[CODE]]
+		. . .
+		    SEQ position = 180 FOR 180 STEP -1
+		      SEQ
+		        delay (20)
+    This is our cast.   pos.chan ! (BYTE position)
+
+	What a cast does won't actually change the value or the type of a variable. It creates an incredibly temporary value (so temporary, it remains unnamed) that draws its initial value from the variable being cast, and passes the cast value into whatever other operation is occuring. We need to be careful in *down-casts* like this one. INTs and BYTEs can only store integer values so we don't need to worry about any math happening without us knowing it, but INTs can store values much greater than BYTEs. If we try to cast an INT with a value of more than 255 to a BYTE, we'd be causing an error.
+
+	With all that in working order, it's finally time for our coup de grace. Only we're going to be putting any out of their misery. We're just going to be swinging that servo around even better. And we're going to do it for as long as that servo can stand!
+	The first thing we want to do is swing that servo back from where we've been leaving it. All we need to do there is put a copy of that replicated SEQ sequentially after the first one, and reverse the direction it drives the servo.
+		[[CODE]]
+		PROC main ()
+		  CHAN BYTE pos.chan:
+		  PAR
+		    simple.servo (11, position?)
+		*   SEQ
+		      SEQ position = 180 FOR 180 STEP -1
+		        SEQ
+		          delay (20)
+		          pos.chan ! (BYTE position)
+		*     SEQ position = 0 FOR 180 STEP 1
+		*       SEQ
+		*         delay (20)
+		*         pos.chan ! (BYTE position)
+		:
+
+	And this code runs perfectly. The only problem I have with it is that the servo still stops. It stops where it started, with is close to what I want. Since I've no intention of ever letting this servo stop swinging, I'm going to take us back that that WHILE loop we learned about a few chapters ago. The one that never exits.
+		[[CODE]]
+		PROC main ()
+		  CHAN BYTE pos.chan:
+		  PAR
+		    simple.servo (11, position?)
+		*   WHILE TRUE
+		      SEQ
+		        SEQ position = 180 FOR 180 STEP -1
+		          SEQ
+		            delay (20)
+		            pos.chan ! (BYTE position)
+		        SEQ position = 0 FOR 180 STEP 1
+		          SEQ
+		            delay (20)
+		            pos.chan ! (BYTE position)
+		:
+
+	And there we have it. A servo that will swing for all eternity.
+	Or, at least until we unplug the Arduino.
+
+BREAKAGES
+
+
+
+
+
+CRAP DRAFTING
+gives us the same looping behavior a WHILE statement provides, but instead of stopping when a conditional 
