@@ -1,0 +1,150 @@
+Servo Chapter 6 A Little Bit Larger Now
+	So, the simple.servo (..) process is very simple. Very simple. Servo are really a good bit more complicated than we've made them seem, and this chapter is (if we're good at our job) going to teach you what we've been hiding from you behind simple.servo (..) and how you can tweek the operation of servos to better suit what you need.
+
+GOALS
+	1 Understand what's really going on with servos.
+	2 Know what we're talking about when PROTOCOLS and Data Types are brought up in casual conversation.
+	3 Learn all there is to know about how to control servos using the plumbing library.
+
+THE CIRCUT
+	Though this is going to be a bit more of a theortical exploration rather than a task-driven one, we're still going to be working with servos. The circut has yet to change.
+		[[CIRCUT DIAGRAM]]
+
+THE CODE
+	First thing's first, let's find out what's really going on with simple.servo (..).
+		[[CODE]]
+		PROC simple.servo (. . .)
+		  CHAN SERVO s:
+		  BYTE b:
+		  PAR
+		    servo (board.pin, s?)
+		    SEQ
+		      s ! min ; 1000
+		      s ! max ; 2000
+		      s ! start
+		      WHILE TRUE
+		        SEQ
+		          p ? b
+		          s ! pos ; (INT b)
+		:
+
+	Right off the bat -- CHAN SERVO s. This merrits some rather deeper explanation. So far, unless I'm mistaken, we've worked with two Data Types and three channel types. The Data type we've seen so far are LEVELs and BYTEs. (We have used a variable of type INT, but we were using it as a BYTE, so I don't think that really counts.) The Channels we've declared have all be either SIGNALs, LEVELs, or BYTEs. As any logician would at this point postulate, any Data Type -- any form of data Occam-pi can store and create a variable of -- can also be a type of channel. If we can hold on to it and operate on it, we can communicate it. The opposite doesn't seem to be true though -- SIGNALs don't communicate any information that can be stored in a variable. This is because a SIGNAL is strictly a *PROTOCOL*.
+	When we declare a CHANnel of type BYTE, what we're really declaring is a CHANnel using the BYTE PROTOCOL. What the protocol does for us -- or the Transterpreter, more directly -- is to tell the program how it should communicate data along that channel. On the other side of Occam-pi, when we declare a BYTE variable, what we're doing is declaring a variable using the BYTE *Data Type*. It's a very peculiar definition to understand -- and one you will rarely, if ever, need to actually worry about -- but the BYTE used in declaring channels (a PROTOCOL) and the BYTE used in declaring variables (a Data Type) aren't quite the same thing.
+	Again, this is something for the Transterpreter to worry about. Knowing the distinction exists as a user simply makes understanding the communications of Occam-pi a bit easier.
+
+	Now, back to simple.servo (..) and the first line, that CHAN SERVO s. We can tell that SERVO is a kind of a PROTOCOL, that's for sure, but it's nothing the Occam-pi language comes standard with. As part of the plumbing library we defined a new kind of PROTOCOL that was specifically designed to make servos easy to control. There's no way of creating a variable of type SERVO in the plumbing library, because it's not a Data Type. Had we created SERVO as a Data Type, we would still be able to declare CHAN SERVOs, but then we'd have to worry about SERVO variables and passing those around.
+	This way's better. Let's check out why.
+		[[CODE]]
+		. . .
+		  PAR
+		    servo (board.pin, s?)
+		    SEQ
+		      . . .
+	Okay, this line isn't actually all that interesting. I just wanted to get out of the way that operating servos using the servo (..) process (seen above) has a very similar form as doing so with simple.servo (..). Both processes take two parameters; the first is the pin number the control wire for the servo is plugged into, and the second is the listening end of a channel. The trick with servo(..) is that this channel is using the PROTOCOL SERVO, rather than BYTE.
+		[[COD]]
+		  . . .
+		    SEQ
+		      s ! min ; 1000
+		      s ! max ; 2000
+		      s ! start
+		      . . .
+
+	Here's where the interesting stuff starts happening. SERVO isn't just any old PROTOCOL. It's what's called a Tagged Protocol. What we're looking at up there are some of SERVO's many and powerful tags.
+	Tagged protocols can very easily be thought of as compound protocols. Protocols are really just instructions for communicating types of data, so it's not hard to imagine the appeal of being able to communicate multiple types of data over the same channel. Tagged protocols let us do this by just adding another element to our communication syntax. (We're just going to be taking a look at how to send down tagged protocols at the moment. Recieving information is a little bit more complex)
+		[[DIAGRAM]]
+		channel.name ! tag.name ; <value1>, <value2>, <. . .>
+
+	That's really it. Every tag is defined as its own kind of channel (SERVO has two SIGNAL tags, and six INTS), and information is sent down a tag's channel same as it would be sent down a channel of the given type. For tags of type SIGNAL -- or any other protocol that doesn't communicate values -- the last portion of the above syntax is removed. As there's nothing after the '!' when talking down a SIGNAL channel, there's nothing after the tag.name when communicating donw a tagged SIGNAL channel.
+
+	To get to the speicific operations of the SERVO protocol, we see three of the most important tags you'll be using up in that last code-segment. If you're funamiliar with the operations of servos (you can read up on them a little bit in the <a>appendix what talks about servos</a>), servos are controlled by a very specific pulse-width pattern sent over the control pin. For most of this time the control pin off, but how long the pin is turned on will determine where the servo's head is set -- the longer the pulse lasts, the farther the head will turn. Every manufacturer gives a pulse-length that will set the servo to its minimum position and a lenght that will set it to its maximum. You can probably guess what min and max set in the SERVO protocol.
+	All of that description was to emphasize how important it is to set min and max properly. In simple.servo (..) we chose values that seemed to us to be safe -- those values being a relatively long minimum pulse, and a relatively short maximum. So those are the first two communications you should send down the line of your SERVO channel (There are default values given in the servo (..) process, but it's better to be safe and double check). The next signal sent is another very important communication.
+		[[CODE]]
+		s ! start
+
+	As you can see from the lack of values being sent, this is a SIGNAL commincation. Again it's a very self explanitory communication (we worked hard at making them all like this). Once you've set min and max (and any other initialization variables you might want to change), the start signal actually activates the servo. Actually, it activates the PWM operations on the given control pin, but that's really a difference of semantics.
+
+	To wrap up our exploration of simple.servo (..), lets take a look at those last four lines.
+		[[CODE]]
+		PROC simple.servo (. . ., CHAN BYTE p?)
+		  CHAN SERVO s:
+		  BYTE b:
+		  . . .
+		      WHILE TRUE
+		        SEQ
+		          p ? b
+		          s ! pos ; (INT b)
+		:
+
+	Most of what these lines do should be very easy to intuit for you at this point. We have two declarations; one SERVO CHANnel and one BYTE variable. We have an infinite loop -- because TRUE will always resolve to TRUE, the loop will never exit on its own -- and two more operations performed one after the other.
+	Those two lines are mostly just house-keeping. As we can see from the definition of simple.servo (..), \p\ is the listening end of a BYTE CHANnel. I've already mentioned that the SERVO protocol contains six INT channels -- and no BYTE channels. So to get the BYTES we push down simple.servo to translate into something SERVO can use, we first need to actually read the communicated BYTE into a variable that can then be cast into an INT. Remembering that we named the BYTE channels we've been using to communicate with simple.servo (..) /position/, the function performed by the pos tag should be pretty clear at this point (it sets the position of the servo, but keep that on the down-low).
+
+	So now that we know how to operate servos using the SERVO protocol, lets take a look at how to get the same continuous swinging behavior we ended with last chapter using the more verbose servo (..) process.
+		[[CODE]]
+		PROC main ()
+		  CHAN SERVO srv:
+		  PAR
+		    servo (11, srv?)
+		*   SEQ
+		*     srv ! min ; 1000
+		*     srv ! max ; 2000
+		*     srv ! start
+		      WHILE TRUE
+		        SEQ
+		          SEQ position = 180 FOR 180 STEP -1
+		            SEQ
+		              delay (20)
+		*             srv ! pos ; position
+		          SEQ position = 0 FOR 180 STEP 1
+		            SEQ
+		              delay (20)
+		              srv ! pos ; position
+		:
+
+	The important pieces of this puzzle to note are first that extra SEQ statement. Again, it's very important to set the min and max lengths before starting the servo, and then start the servo before expecting the position to change with we talk down pos (though you can set pos before sending the start command).
+	So, all we really did there was add a layer of complexity to this process and not expand on what we had. The one other useful but very simple tag we ought to be taking advantage of is SERVO's div tag. With this tag, we can change how many divisions there are going to be for pos to be set to. div defaults to 180 (which is why we've been setting position -- and now pos -- to everything between 0 and 180), but it can really be any positive number. Be aware that, becuase we're just affecting the number of divisions (and not a range), the lowest position a SERVO's pos can be set to will always be 0.
+	So lets get crazy with variables and tags and replications and... yeah.
+		[[CODE]]
+		PROC main ()
+		  INITIAL INT divisions IS 4: -- This is the most fun number here. Set it to all kinds of different values, and see how it affects the system.
+		  INITIAL INT time = (2000 / divisions) -- This variable is to makes sure it takes about four secods to swing from left to right, and back to left)
+		  CHAN SERVO srv:
+		  PAR
+		    servo (11, srv?)
+		    SEQ
+		      srv ! min ; 1000
+		      srv ! max ; 2000
+		      srv ! div ; divisions
+		      srv ! pos ; divisions -- Setting the position to its max possible value
+		      srv ! start
+		      WHILE TRUE
+		        SEQ
+		          SEQ position = divisions FOR divisions STEP -1
+		            SEQ
+		              delay (time)
+		              srv ! pos ; position
+		          SEQ position = 0 FOR divisions STEP 1
+		            SEQ
+		              delay (time)
+		              srv ! pos ; position
+		:
+
+	So with that playing around out of our systems, lets take a final look at SERVO, and at least know what the last three tags it offers are (and why we probably shouldn't play with them).
+		[[SIDEBAR? DIAGRAM?]]
+	min	  - Records the minimum pulse-length for the servo
+	max	  - Records the maximum pulse-length for the servo
+	div	  - Sets how many divisions there are going to be between 0 and max.
+	pos	  - Sets the position of the servo (based on the number of divisions set)
+	usec	  - Adding (min + usec) will garner the precise number of microseconds the control pulse will last.
+		    *We reccomend using pos to set the position*. 
+	frequency - Defines the frequency of control-pulses.
+		    *Most -- if not all -- hobby servos requre a pulse frequency of 20 millisecods. This is the number frequency defaults to, so we strongly reccomend you not change this value*.
+	
+	start	  - Starts the servo operations.
+		    We reccomend setting min, max, div and (if need be) frequency *before* sending the start signal.
+	stop	  - This actually doesn't do anything.
+		    Who would want to stop a servo's operation anyway? (We'll probably get around to figuring out how to stop servos some day... Maybe.)
+
+	So there you have it. The complete SERVO package.
+	Good luck on your explorations, and never stop having fun!
+	
+
