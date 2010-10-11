@@ -1,14 +1,89 @@
+	So you've got a servo, do you? And you want to drive it with your Arduino, do you? Well. You've come to the right place. In this next series of chapters we'll be walking through the code and syntax you'll need to drive servos. In this chapter we're going to simply explore turning the servo on, but we'll quickly be moving up towards more interesting operations.
+	It's also definitely worth a note that even if you don't have a servo, you can still explore the concepts and syntax brought forward in these next five chapters. The simple.servo(..) process we'll be spending a great deal of time with has the same signature as the pwm(..) process that was the focus of chapters [whatever], so if you're willing to experiment some, all of the code that's designed here to drive servos can drive a fading LED!
 
 \GOALS
 
 \begin{enumerate}
-	\item asdfasdf
+  \item To understand what a servo needs in order to properly operate.
+	\item To revise our understanding of what CHANnels can do.
+	\item To set a servo's position with the simple.servo(..) process.
 \end{enumerate}
 
 
-%\CIRCUIT
-\section{The Circuit}
+\CIRCUIT
+	One of the fun things about this circuit is that we don't actually need the bread-board. We can plug our servo right into the Arduino pins and run straight off the board.
+	All you will need are:
+	1 Your Arduino
+	2 Your Servo
+		[[CIRCUT DIAGRAM]]
+
+	You servo might not look much like the one in the diagram above, and perhaps your ground, power and control wires aren't in the same order. That's perfectly fine. What's crucial is making sure your ground wire is the one plugged into the ground pin, your power is plugged into the 5v pin, and that your control is plugged into one of the correct PWM pins. If this is not done, bad things could very well happen to both your board and your servo. And that would be bad.
+	Measure twice, run your servo.. more than once, actually, is the goal.
+
+	The fact that we're plugging the control wire into pin 11 is more important than you might think. As discussed in previous a chapter[s], PWM pins are connected to Counters in the Arduino's processor. Some of these counters are 8 bit (and can thus only count up to 255 -- the maximum value of a single BYTE), and -- on the Arduino -- only one of these is a 16 bit counter (meaning it can count well past 60,000). For servos to operate properly, we need the control wire to be plugged into not just a PWM pin, but a 16 bit PWM pin.
+
+[[SIDE BAR]]
+On the Arduino, and any other board using an ATmega328p processor, the only two pins that are connected to a 16 bit timer are:
+9, and 10.
+On boards like the ArduinoMega and the ArduPilotMega -- boards equipped with the Atmega1280 -- the range of 16 bit pins is quite a bit wider. You can select from pins:
+2, 3, 5, 6, 7, 8, 11, 12, 13, 44, 45 or 46.
+
 
 \CODE
 \lstinputlisting[%caption=The {\code heartbeat} should always be beating.,
-label=code:heartbeat]{code/heartbeat.occ}
+label=code:simple-servo]{code/simple-servo.occ}
+
+	Before we get started talking about the code we'll be writing today, there's one piece of information you probably want to have on hand. We have an appendix in the back of this book that describes in enough detail the mechanical operations of servos, but as teaching electrical engineering isn't the goal of this book, we won't bore you with unnecessary details. What you need to know though, is that the /minmum and maximum control pulse widths are to 1000 mircoseconds and 2000 mircoseconds respectively/. As each servo is different, yours might have different minimum and maximum values. If your servo can take shorter and longer pulse widths (as is probably the case), there's nothing to worry about. If your servo's minimum pulse needs to be longer than 1000 mircoseconds, or if its maximum pulse needs to be shorter than 2000, *this code may be damaging to your servo*.
+	It's always better to be safe than sorry, so if you love that servo you're going to be playing with, be sure to double check its speicfications. If need be, simply read through these next five chapters so you have an idea of what's going on with the code, and when you get to chapter six we'll shoe you how to set the minimum and maximum pulse widths manually.
+
+
+	As has already been mentioned, the hot, new processes we're going to be spending some time with in this section is simple.servo(..). It's a very simple process. As we can see from the network digram for the code we're about to write, simple.servo(..) only has one parameter, and takes a single CHANnel of type BYTE
+
+	[[PARTIAL NETWORK DIAGRAM]]
+
+	CHANnels of BYTEs are built to carry a good bit more information than the channels we're used to working with. SIGNAL channels actually only convey the information that a SIGNAL has been sent. There's no state data that's sent in a SIGNAL. We have played a little bit with LEVEL channels which do carry some information with them, but LEVEL is a very limited data type. It can contain either HIGH or LOW, and nothing beyond that. The BYTE data type can contain any number between 0 and 255 which -- as far as numbers are concerned -- isn't that much of a range. It's enough to contain the degree ranges of 0 to 180 though, which should act as a good approximation for the range of most hobbie servos. You can see the BYTE channel we're going to be using is named pos.chan, which is -- if you fcan believe it -- short for position channel, as this channel is what we're going to be using to set the position of our servo.
+
+	So, to get some code written from that network diagram, we can see that we're going to have to declare a CHANnel, and place simple.servo in parallel (so communications can occur).
+		[[CODE]]
+		CHAN BYTE pos.chan:
+		PAR
+		  simple.servo(11, pos.chan?)
+
+	If you haven't started worrying about what's missing been missing from that network diagram... well, don't worry, we're about to solve that little conundrum. We've left off what's connected to the sending end of pos.chan because there actually isn't going to be a named process talking down that channel. So far in this book, we've always been plugging together pre-built process with channels; passing the sending end to one process and the recieving end to another. Because we want to actually retain control over the servo's positions, it won't do to hand the sending end of that channel to another process. We need to communicate down that channel ourselves.
+
+	The way to do that is remarkably easy, actually. There are three elements to any message sent directly by the user. The first thing we have to do is specifiy which channel we're going to talk down,
+		[[CODE]]
+		*pos.chan*
+	Tell our code that we're going to be sending a message down the channel (if you remember, sending and recieving has everything to do with the ! (bang) and the ? ('eh). We've already passed the ? into simple.servo, so we're going to be taking advantage of that ! now)
+		[[CODE]]
+		pos.chan *!*
+	And then we need to specify what we want to send. Becuase this channel is controlling the position of our servo in terms of the degrees between 0 and 180, let's tell that servo to head towards the 45 degree mark.
+		[[CODE]]
+		pos.chan ! *45*
+
+[[SIDE BAR?]]
+	It's very important that we always make sure that the message we send is of the same type as the channel we're sending it down. Channels of type LEVEL can only send HIGH or LOW, as those are the only two LEVELs out there. Channels of type BYTE, as has been said, can only send the numbers between 0 and 255, etc.
+	SIGNAL channels are a little special though. I said that every communication down a channel is made up of those three elements -- the channel name, the fact that we're sending something, and what we're communicating -- but because SIGNALs don't actually communicate any state data -- just that a SIGNAL has been sent -- there's nothing for a SIGNAL to communicate. To send a SIGNAL, we just have to write:
+		[[CODE]]
+		signal.name !
+[[/SIDE BAR?]]
+
+	Once we've updated our network diagram to show the fact that we're going to be the ones communicating down pos.chan:
+
+		[[UPDATED NETWORK DIAGRAM]]
+
+ 	We can see that we need to add that line of code that sends that positinal information under the PAR so simple.servo can hear us when we ! that message off.
+		[[CODE]]
+		CHAN BYTE pos.chan:
+		PAR
+		  simple.servo(11, pos.chan?)
+		  pos.chan ! 45
+
+	Then we just need to wrap that code in the usual PROC main () ... :, indent everything those last two spaces, and we'll have some code that sets our servo to a 45 degree angle!
+		[[CODE]]
+		PROC main ()
+		  CHAN BYTE pos.chan:
+		  PAR
+		    simple.servo(11, pos.chan?)
+		    pos.chan ! 45
+		:

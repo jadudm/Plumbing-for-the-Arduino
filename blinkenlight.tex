@@ -11,7 +11,7 @@ The goals for this chapter are for you to:
 \end{enumerate}
 
 
-\section{Step By Step}
+\CODE
 In most chapters, we would now dive straight into the code you need to write or the circuit you need to build, and then discuss the patterns you should be aware of in the program you just wrote. (Programs have many patterns to them---learning to recognize these patterns is an important step in becoming comfortable with programming in any language.) In this chapter, we'll take it slow and go one step at a time.
           
 \subsection{Open JEdit}
@@ -46,11 +46,12 @@ Those {\strong spaces matter a lot}. The most important spaces are the ones on t
 
 After copying the code, save it as {\code heartbeat.occ}. If you'd like to call it something else, please feel free to do so. On the Mac, you can press COMMAND-S, and under Linux and Windows, CTRL-S. Or, you can click the little floppy disk in the toolbar. Regardless of how you do it, save your work often!
 
-% XXX Need to tell them to "Setup Arduino," which requires downloading the TVM...
+% FIXME Need to tell them to "Setup Arduino," which requires downloading the TVM...
 
 \subsection{Build Your Code}
 Your code is human-readable. (You may not feel that way yet, but it is.) We need to convert it from something you understand to something your Arduino understands. We would properly call this {\em compiling} your program. Go up to the {\em Plugins} menu, go down to {\em Plumbing}, and select the {\em Start occPlug} option. You'll get a new floating window that provides a few critical tools. First, you need to select ``Arduino'' from the drop-down menu (it defaults to ``Desktop'').
 
+% FIXME Now need to update this image.
 \begin{figure}[ht]
   \begin{center}
     \includegraphics[width=1.0\linewidth]{screenshots/20100108-compile-button}
@@ -63,7 +64,7 @@ Once you have the occPlug extension running, you can compile and run your progra
          
 %\newpage
                                 
-% XXX Need to cover how we select which Arduino in the plugin...
+% FIXME Need to cover how we select which Arduino in the plugin...
 If you code compiled, you'll see a message that looks something like this:
 
 \begin{figure}[ht]

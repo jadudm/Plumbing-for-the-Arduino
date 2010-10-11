@@ -1,0 +1,40 @@
+20101011
+
+Looking at the chapter structure...
+
+There is parallel structure in the CIRCUIT, PROCESS NETWORK, and CODE sections. Each is followed (possibly) by discussion (if necessary). 
+
+Note: Get rid of the electronics explorations. We aren't writing an electronics text. They can find other resources to learn that. We can link to some on the WWW, or we can recommend books, etc. We aren't going to re-create good writing about electronics when it can be found elsewhere. Focus on what we know, write about what we do, and encourage the reader to look elsewhere for the basics of electronics. Yes?
+
+
+EACH CHAPTER SHOULD TRY AND FOLLOW THE STRUCTURE BELOW.
+
+*INTRODUCTION*
+No actual title for this section. Should be *very* short. Introduces what is going on overall.
+
+GOALS
+A few bullets. One, two, maybe three. More than that, and we should probably should split the goals across two chapters.
+
+[ CIRCUIT ]
+Every chapter should have a circuit. In the first chapter, we should have a picture of an Arduino and circle the pin 13 LED. If the circuit is the same as the previous chapter, we should repeat the diagram (but not the explanatory text.) 
+
+[[ UNDERSTANDING THE CIRCUIT ]]
+Should there be a subsection for every circuit where the discussion happens?
+
+[ PROCESS NETWORK ]
+Early chapters don't have process networks. As we move past chapter 4 (in the current formulation) we need to include the network. 
+
+[[ FROM PICTURES TO CODE ]]
+If we need to discuss the network, we do it here.
+
+CODE
+Just the code. 
+
+[[ DISCUSSION ]]
+This is where we discuss the code.
+
+[ EXPLORATIONS AND BREAKAGE ]
+Things we can tweak to see what happens (without breaking, ideally). How to break things.
+
+[ ADDITIONAL RESOURCES ]
+Links, references, etc.

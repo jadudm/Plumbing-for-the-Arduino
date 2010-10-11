@@ -27,7 +27,7 @@ A picture of what you're going to build (and the circuit diagram) can be found i
 
 The newest and most interesting part of this circuit is the addition of the button. One leg of the button will be connected to the {\code +5V} pin on the Arduino. The opposite leg will be connected to ground through a 10k\ohm resistor (\resistor{Brown}{Black}{Orange}, Brown Black Orange Gold). From the same column as the resistor we will connect a wire to pin \pintwo on the Arduino; we will use pin \pintwo to detect whether the button has been pressed. 
 
-Getting this circuit wrong could have some unpleasant consequences for your Arduino. Remember, there are plenty of texts that will teach you more about electronics than this one. That said, you should know why that 10k\ohm resistor is so important. If you left it out, pushing the button would be equivalent to connecting {\code +5V} directly to pin \pintwo. Why is this bad? The only resistance between the voltage source and pin \pintwo would be the resistance of the wire; it turns out that this is a very small number. If we look at Ohm's Law\footnote{XXX Wikipedia link}, we see why this is bad.
+Getting this circuit wrong could have some unpleasant consequences for your Arduino. Remember, there are plenty of texts that will teach you more about electronics than this one. That said, you should know why that 10k\ohm resistor is so important. If you left it out, pushing the button would be equivalent to connecting {\code +5V} directly to pin \pintwo. Why is this bad? The only resistance between the voltage source and pin \pintwo would be the resistance of the wire; it turns out that this is a very small number. If we look at Ohm's Law\footnote{FIXME Wikipedia link}, we see why this is bad.
 
 %\begin{equation}
 %	V = IR
