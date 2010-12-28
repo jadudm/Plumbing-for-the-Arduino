@@ -22,25 +22,29 @@
 		<keyword>embedded</keyword>
 	</keywordset>
 
+	<!-- FIXME: This doesn't fit on a page. -->
 	<corpauthor>
 		<inlinemediaobject>
 			<imageobject>
-				<imagedata fileref="images/front_cover.png" format="PNG" />
+				<imagedata width="300px" fileref="images/front_cover_300x400.png" format="PNG" />
 			</imageobject>
 		</inlinemediaobject>
 	</corpauthor>
+
 <!-- FIXME: This worked, but details (like image size) need to be handled. Also, CC license information needs to be encoded somewhere in the book. -->
 
 <mediaobject role="cover" id="epub_cover">
 	<imageobject role="front-large" remap="lrg">
-		<imagedata width="600px" format="PNG" fileref="images/front_cover.png"/>
+		<imagedata width="300px" format="PNG" fileref="images/front_cover_300x400.png"/>
 	</imageobject>
+<!--
 	<imageobject role="front" remap="s">
 		<imagedata format="PNG" fileref="images/front_cover.png"/>
 	</imageobject>
 	<imageobject role="front-small" remap="xs">
 		<imagedata format="PNG" fileref="images/front_cover.png"/>
 	</imageobject>
+-->
 	<imageobject role="thumbnail" remap="cs">
 		<imagedata format="PNG" fileref="images/front_cover_thumbnail.png"/>
 	</imageobject>

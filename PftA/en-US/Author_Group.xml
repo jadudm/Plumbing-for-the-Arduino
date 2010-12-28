@@ -5,13 +5,31 @@
 ]>
 <authorgroup>
 	<author>
-		<firstname>Dude</firstname>
-		<surname>McPants</surname>
+		<firstname>Matthew</firstname>
+		<surname>Jadud</surname>
 		<affiliation>
-			<orgname>Somewhere</orgname>
-			<orgdiv>Someone</orgdiv>
+			<orgname>Allegheny College</orgname>
 		</affiliation>
-		<email>Dude.McPants@example.com</email>
+		<email>matt@concurrency.cc</email>
 	</author>
+
+	<author>
+		<firstname>Christian</firstname>
+		<surname>Jacobsen</surname>
+		<affiliation>
+			<orgname>University of Copenhagen</orgname>
+		</affiliation>
+		<email>christian@concurrency.cc</email>
+	</author>
+
+	<author>
+		<firstname>Adam</firstname>
+		<surname>Sampson</surname>
+		<affiliation>
+			<orgname>University of Dundee</orgname>
+		</affiliation>
+		<email>ats@offog.org</email>
+	</author>
+
 </authorgroup>
 
