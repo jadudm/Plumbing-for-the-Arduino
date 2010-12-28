@@ -4,24 +4,48 @@
 %BOOK_ENTITIES;
 ]>
 <bookinfo id="book-PftA-PftA">
-	<title>PftA</title>
-	<subtitle>short description</subtitle>
-	<productname>Documentation</productname>
-	<productnumber>0.1</productnumber>
+	<title>Plumbing for Artists and Makers</title>
+	<subtitle>Parallel programming in occam-pi on the Arduino</subtitle>
+	<productname></productname>
+	<productnumber></productnumber>
 	<edition>1</edition>
 	<pubsnumber>0</pubsnumber>
 	<abstract>
 		<para>
-			A short overview and summary of the book's subject and purpose, traditionally no more than one paragraph long. Note: the abstract will appear in the front matter of your book and will also be placed in the description field of the book's RPM spec file.
+		This book introduces occam-pi, a programming language that makes it easy to do two things at the same time. We introduce it in the context of the Arduino, an small, electronics platform popular for prototyping and experimenting.
 		</para>
 	</abstract>
+	<keywordset>
+		<keyword>occam</keyword>
+		<keyword>arduino</keyword>
+		<keyword>parallel</keyword>
+		<keyword>embedded</keyword>
+	</keywordset>
+
 	<corpauthor>
 		<inlinemediaobject>
 			<imageobject>
-				<imagedata fileref="Common_Content/images/title_logo.svg" format="SVG" />
+				<imagedata fileref="images/front_cover.png" format="PNG" />
 			</imageobject>
 		</inlinemediaobject>
 	</corpauthor>
+
+<mediaobject role="cover" id="epub_cover">
+	<imageobject role="front-large" remap="lrg">
+		<imagedata width="600px" format="PNG" fileref="images/front_cover.png"/>
+	</imageobject>
+	<imageobject role="front" remap="s">
+		<imagedata format="PNG" fileref="images/front_cover.png"/>
+	</imageobject>
+	<imageobject role="front-small" remap="xs">
+		<imagedata format="PNG" fileref="images/front_cover.png"/>
+	</imageobject>
+	<imageobject role="thumbnail" remap="cs">
+		<imagedata format="PNG" fileref="images/front_cover_thumbnail.png"/>
+	</imageobject>
+</mediaobject>
+
+
 	<xi:include href="Common_Content/Legal_Notice.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 	<xi:include href="Author_Group.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 </bookinfo>
