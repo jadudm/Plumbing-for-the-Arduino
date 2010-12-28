@@ -29,6 +29,7 @@
 			</imageobject>
 		</inlinemediaobject>
 	</corpauthor>
+<!-- FIXME: This worked, but details (like image size) need to be handled. Also, CC license information needs to be encoded somewhere in the book. -->
 
 <mediaobject role="cover" id="epub_cover">
 	<imageobject role="front-large" remap="lrg">
