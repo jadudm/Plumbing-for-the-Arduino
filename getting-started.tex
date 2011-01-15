@@ -51,12 +51,10 @@ Note, on the left-hand side, the six pins protruding from the board? If your Ard
 \subsection{You have a new Arduino}
 If you have an {\em Arduino Uno} or an {\em Arduino Mega 2560} (the newest Arduinos on the block), you do not need to install anything. You're good to go!
 
-\afterpage{\clearpage}
-
 \section{Testing JEdit}
 JEdit is a free and open-source editor written in Java. It runs on Mac, Linux, and Windows. We added a ``plug-in'' to this project that lets JEdit talk to your Arduino. You can freely download a version of JEdit from \ccc that has our plug-in pre-configured and ready to go for your choice of operating system.
       
-\begin{figure}[!bph]
+\begin{figure}[!ht]
   \begin{center}
     \includegraphics[height=2.5in]{screenshots/20100108-jedit-docked-occplug}
     \caption{The JEdit program editor.}
@@ -64,47 +62,53 @@ JEdit is a free and open-source editor written in Java. It runs on Mac, Linux, a
   \end{center}
 \end{figure}
 
-\afterpage{\clearpage}
 
 \subsection{Upload the Firmware}
-Before you can run \occam programs on your Arduino, you need to upload some firmware. {\strong Firmware} is code that lives on a processor and executes when it turns on. In the case of \occam programs, we need to install the {\em Transterpreter} on your Arduino---the Transterpreter runs when the Arduino powers on or resets, and then it looks around for your \occam program. 
+Before you can run \occam programs on your Arduino, you need to upload some firmware. {\strong Firmware} is code that lives on a processor and executes when it turns on. In the case of \occam programs, we need to install the {\em Transterpreter} on your Arduino---the Transterpreter is the firmware for \occam programs. 
 
 \begin{figure}[!ht]
 	\centering
 		\includegraphics[width=0.6\linewidth]{images/20110115-upload-firmware}
-	\caption{First, upload the firwmare to your Arduino.}
+	\caption{Choose ``Upload Firmware'' from the \occplug menu.}
 	\label{images:20110115-upload-firmware}
 \end{figure}
 
 Selecting this menu option will pop open a window with a set of options like the following:
 
-\begin{figure}[htbp]
+\begin{figure}[!ht]
 	\centering
 		\includegraphics[width=0.9\linewidth]{images/20110115-upload-firmware-window}
 	\caption{Select the correct options and upload the firwmare.}
 	\label{images:20110115-upload-firmware-window}
 \end{figure}
 
-\afterpage{\clearpage}
-
 First, select which kind of Arduino you have from the drop-down menu. Then, you need to select your serial port.
 
 \begin{itemize}
-	\item On the Mac, the name of the Arduino will look something like \code{/dev/tty.usbserial-A9007U6Z}. 
+	\item On the Mac, the name of the Arduino will look something like {\code /dev/tty.usbserial-A9007U6Z}. 
 	\item On Windows, it will be a COM port; you may have to type it in.
-	\item On Linux, it should be something like \code{/dev/ttyUSB0}.
+	\item On Linux, it should be something like {\code /dev/ttyUSB0}.
 \end{itemize}
+
+\newpage
 
 Once you've done that, you can click ``Upload firmware,'' and the Transterpreter will be uploaded to your Arduino. It will then check to see everything was uploaded correctly; it should take around 10 seconds. Once it is done, you can click ``Done,'' and begin writing \occam programs for your Arduino.
 
+\vspace{1cm}
+\begin{warning}
+The firmware you upload is {\em just an overgrown Arduino sketch}. If you decide to write an Arduino program using Wiring, it will overwrite the \plumbing firmware. So, when you switch back to \occam, the first thing you will have to do is (again) upload the firmware.
+\end{warning}
+\vspace{1cm}
 
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+Put another way, you can freely switch back-and-forth between programs that use \occam and C++, but you have to remember that you need to upload the firmware before an \occam program can be executed.
 
 \begin{comment}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
 \CODE
 In most chapters, we would now dive straight into the code you need to write or the circuit you need to build, and then discuss the patterns you should be aware of in the program you just wrote. (Programs have many patterns to them---learning to recognize these patterns is an important step in becoming comfortable with programming in any language.) In this chapter, we'll take it slow and go one step at a time.
           
