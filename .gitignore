@@ -14,3 +14,6 @@ plumbing-for-the-arduino.pdf
 # Specific directories
 packages
 .DS_Store
+
+# Utilities 
+network-diagrams/graffle.s*
