@@ -1,12 +1,5 @@
 #!/bin/bash
 
-# This code was checked out of 
-# https://github.com/dcreager/graffle-export
-# on 20110115. No license was attached at the time,
-# but we assume an open license based on the terms of 
-# GitHub's requirements for free repositories. 
-# This code should not be considered authoritative.
-
 if [ $# -eq 2 ]; then
     FORMAT=""
     INPUT_FILE=$1
