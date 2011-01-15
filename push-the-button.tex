@@ -58,7 +58,7 @@ Programming is an incredibly visual activity. If you observe two experienced pro
   \end{center}
 \end{figure}
 
-We call this a {\strong process network}. Each large box represents a {\strong process}, which is a piece of code that is churns away independently of every other process. We use small, gray boxes to indicate {\strong parameters} that adjust the alter the behavior of the process they are attached to. So, in Figure~\vref{diagram:ch4-button-toggle-led}, we would say that {\code button.press} has one parameter, which is {\constant 14}. 
+We call this a {\strong process network}. Each large box represents a {\strong process}, which is a piece of code that is churns away independently of every other process. We use small, gray boxes to indicate {\strong parameters} that adjust the alter the behavior of the process they are attached to. So, in Figure~\vref{diagram:ch4-button-toggle-led}, we would say that {\code button.press} has one parameter, which is {\constant 2}. 
 
 The arrow between the two processes is a \CHANnel. Specifically, it is a communications channel---a wire---that connects one process to another. When we look at Figure~\vref{diagram:ch4-button-toggle-led}, we can tell that the process {\code button.press} communicates over a channel called {\code s} with a process called {\code pin.toggle}. We know that {\code pin.toggle} does {\em not} talk with {\code button.press}, simply because the arrow tells us which way the communications take place.
 
@@ -70,8 +70,8 @@ First, we see there are two {\strong processes}. We can write down their names.
 
 \vspace{3mm}
 \begin{lstlisting}
-button.press()
-pin.toggle()
+button.press ()
+pin.toggle ()
 \end{lstlisting}
 
 Next, we know that both processes have {\strong parameters} associated with them (the gray boxes). We're going to need to include those parameters in our code%\footnote{Because these processes are part of the \plumbing library, we do have to make sure the parameters go in the right place... if you juggle them around randomly, you will get an error}
@@ -79,8 +79,8 @@ Next, we know that both processes have {\strong parameters} associated with them
 
 \vspace{3mm}
 \begin{lstlisting}
-button.press(14)
-pin.toggle(13, LOW)
+button.press (2)
+pin.toggle (12, LOW)
 \end{lstlisting}
 
 Because there is an arrow connecting these two processes, we're going to need a \CHANnel to communicate over. But here's the trick: {\strong all communications must happen in \PARallel}. Why? Can you have a phone conversation with someone where you speak and {\em then} they listen? Or, do they have to be listening {\em at the same time} as you are speaking? See. 
@@ -94,8 +94,8 @@ To run our two processes in parallel, we put them under a \PAR. Remember that ev
 \vspace{3mm}
 \begin{lstlisting}
 PAR
-  button.press(14)
-  pin.toggle(13, LOW)
+  button.press (2)
+  pin.toggle (12, LOW)
 \end{lstlisting}
 
 We're only missing one thing at this point: the \CHANnel. We have to {\strong declare} the channel outside the \PAR. What this means is that we have to tell \occam that we want a communications channel (we'll call it {\code s}). Further, we have to tell \occam what {\em kind} of information it will carry. In this case, we want it to carry information of type \SIGNALT. 
@@ -106,8 +106,8 @@ The declaration looks like this:
 \begin{lstlisting}
 CHAN SIGNAL s:
 PAR
-  button.press(14)
-  pin.toggle(13, LOW)
+  button.press (2)
+  pin.toggle (12, LOW)
 \end{lstlisting}
 
 By placing the declaration before the \PAR, it indicates that the processes that are running in parallel may, if they wish, use the channel {\code s} to send a \SIGNALV. Now we have just one step left: we have to give one end of the channel to each of the two processes in the \PAR.

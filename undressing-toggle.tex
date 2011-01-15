@@ -41,9 +41,9 @@ From this network, we can write the code. We know there are three processes, so 
 \vspace{3mm}
 \begin{lstlisting}
 PAR
-  button.press()
-  toggle()
-  pin.level()
+  button.press ()
+  toggle ()
+  pin.level ()
 \end{lstlisting}
 
 Next, we can see there are two {\CHANnel}s. One is of type \SIGNALT, the other of type \LEVELT. To use a channel, we have to declare it before it is used. So, we'll include {\em two} channel declarations.
@@ -53,9 +53,9 @@ Next, we can see there are two {\CHANnel}s. One is of type \SIGNALT, the other o
 CHAN SIGNAL s:
 CHAN LEVEL  v:
 PAR
-  button.press()
-  toggle()
-  pin.level()
+  button.press ()
+  toggle ()
+  pin.level ()
 \end{lstlisting}
 
 Next, we need to give the {\PROCedure}s their parameters. We do this through a combination of reading the \plumbing library documentation\footnote{\url{http://concurrency.cc/docs/}} as well as studying the process network diagram.
@@ -69,9 +69,9 @@ Next, we need to give the {\PROCedure}s their parameters. We do this through a c
 CHAN SIGNAL s:
 CHAN LEVEL  v:
 PAR
-  button.press(2, s!)
-  toggle(LOW, s?, v!)
-  pin.level(13, LOW, v?)
+  button.press (2, s!)
+  toggle (LOW, s?, v!)
+  pin.level (12, LOW, v?)
 \end{lstlisting}
 
 \vspace{3mm}
@@ -83,9 +83,9 @@ PROC main ()
   CHAN SIGNAL s:
   CHAN LEVEL  v:
   PAR
-    button.press(2, s!)
-    toggle(LOW, s?, v!)
-    pin.level(13, v?)
+    button.press (2, s!)
+    toggle (LOW, s?, v!)
+    pin.level (12, v?)
 :
 \end{lstlisting}
 

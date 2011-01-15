@@ -1,6 +1,6 @@
 PROC main ()
   CHAN BYTE pos.chan:
   PAR
-    simple.servo(11, pos.chan?)
+    simple.servo (11, pos.chan?)
     pos.chan ! 45
 :
