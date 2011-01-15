@@ -85,12 +85,14 @@ The first pattern you see in this program is the definition of the procedure cal
 
 \begin{figure}[ht]
   \begin{center}
-    \includegraphics[scale=1.0]{images/ch1-proc-defn-pattern}
+		\ifthenelse{\boolean{print}}
+    	{\includegraphics[scale=1.0]{new-diagrams/proc-definition-pattern-print}}
+			{\includegraphics[scale=1.0]{new-diagrams/proc-definition-pattern-screen}}
     \caption{A procedure definition.}
     \label{pattern:ch1-proc-defn}
   \end{center}
-\end{figure}
-        
+\end{figure}  
+      
 %%%%%%%%
 % NEWPAGE
 %%%%%%%%
