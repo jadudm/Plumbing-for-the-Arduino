@@ -140,6 +140,14 @@
 % Drawing Resistors
 \newcommand{\resistor}[3]{\colorbox{#1}{ }\colorbox{#2}{ }\colorbox{#3}{ }\colorbox{Goldenrod}{ }\xspace}
 
+% WARNING BOX
+\newenvironment{warning}
+  {\par\begin{mdframed}[linewidth=2pt,linecolor=red]%
+    \begin{list}{}{\leftmargin=1cm
+                   \labelwidth=\leftmargin}\item[\Large\ding{43}]}
+  {\end{list}\end{mdframed}\par}
+
+
 
 % I'm really unclear regarding left/right on this document.
 % I feel like I should have a bigger gutter, but it looks like
