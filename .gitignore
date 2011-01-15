@@ -15,5 +15,13 @@ plumbing-for-the-arduino.pdf
 packages
 .DS_Store
 
-# Utilities 
+# Generated files (network diagrams)
 network-diagrams/graffle.s*
+network-diagrams/*-print.pdf
+network-diagrams/*-screen.png
+
+# Generated files (new diagrams)
+new-diagrams/graffle.s*
+new-diagrams/*-print.pdf
+new-diagrams/*-screen.png
+
