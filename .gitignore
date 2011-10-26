@@ -2,6 +2,7 @@
 *.toc
 *.aux
 *.log
+*~
 
 # Specific files
 book.pdf
@@ -24,4 +25,10 @@ network-diagrams/*-screen.png
 new-diagrams/graffle.s*
 new-diagrams/*-print.pdf
 new-diagrams/*-screen.png
+
+# new things from the cookbook transition
+Makefile~
+plumbing-for-arduino.pdf
+plumbing-for-arduino.py
+plumbing-for-arduino.py.err
 
