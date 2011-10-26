@@ -1,0 +1,36 @@
+\documentclass[a5paper,oneside]{scrbook}
+
+\include{packages}
+\include{cmds}
+
+\begin{document}
+
+	
+%%\maketitle
+\input{cover}
+
+%\begin{comment}
+
+\tableofcontents
+
+\chapter*{Preface\label{preface}}
+\input{preface}
+
+\chapter{Getting Started\label{ch0}}
+\input{getting-started}
+
+\chapter{Your First Plumbing Programs\label{ch1}}
+\input{pfta-ch1}
+
+%\end{comment}
+
+%\chapter{Fading Away\label{ch7}}
+%\input{ch7}
+
+\chapter{Acknowledgements\label{acknowledgements}}
+\input{acknowledgements}
+
+\chapter{Book Bugs\label{bugs}}
+\input{bugs}
+
+\end{document}

@@ -1,0 +1,107 @@
+When you are using Plumbing, you are using a library of code. You can think of a library as a bunch of code someone else wrote (so you don't have to) that helps make complex things simple for you. Plumbing, therefore, is not a programming language, but a collection of useful code.
+
+If you are using the Plumbing libraries, you'll be programming in \occam. This is an old language, developed in the mid-eighties, that was designed so that programmers could easily express ideas regarding the concurrent and parallel execution of code. Put simply, it is easy to express the idea that you want to do two things at the same time in the programming language \occam. This is typically considered complex; in \occam, it is natural.
+
+Some of what you see here will be ``jumping ahead;'' that is, this chapter covers some of the basics of the \occam programming language. It necessarily draws on things that you will see later in this cookbook. Wherever possible, we'll provide forward pointers so that you can, if you want, look up things and get more detail as they are introduced (in passing) here. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Structuring an \occam Program for the Arduino}
+
+\problem
+You are new to programming the Arduino and need a template to get started.
+
+\solution
+We don't yet have a ``style'' for how \occam programs on the Arduino should look. In truth, this is because we are just writing \occam programs that happen to be running on the Arduino. If you're accustomed to working with the Arduino environment, you know there is a common pattern: a {\code setup} function and a {\code loop} function. Well, in \occam, we'll write \emph{lots} of loops---in fact, infinite loops end up all over the place in an \occam program!
+
+If you want, you could make your code look just like a typical Arduino sketch:
+
+\lstinputlisting[caption=Starting off with an Arduino-ish sketch.,label=code:arduinoish]{code/ch1-arduinoish.occ}
+
+However, we don't have to break things down this way. We could simplify this by simply combining the {\code setup} and {\code loop} {\PROC}s into one block of code:
+
+\lstinputlisting[caption=Simplifying the sketch.,label=code:arduinoish2]{code/ch1-arduinoish2.occ}
+
+Now, in truth, if you want to blink an LED, you could just do the following:
+
+\lstinputlisting[caption=Using the Plumbing library.,label=code:arduinoish3]{code/ch1-arduinoish3.occ}
+
+Why? Because we already have code that blinks an LED forever. The setup, loop, and delays are all wrapped up inside of the \PROC called {\code blink}.
+
+\discussion
+
+Unlike programs written in C++ for the Arduino, your \occam programs are compiled and run ``as-is'' on the Arduino. We don't process your code and insert any magic wrappers... so, what you write is what you get. That said, there are a few obvious differences between \occam and C++:
+
+\begin{description}
+	\item[Indentation.] \occam programs use indentation much like Python programs; there are no semicolons to indicate the end of lines, and there are no brackets to indicate blocking. In Listing~\ref{code:arduinoish2}, you can see the indentation under the \SEQ; this means that we do each of those things \emph{in sequence}. This is important, because...
+	\item[Parallelism.] We'll soon see that there is a \PAR as well as a \SEQ. This means that if you want to do one thing after another, you need to explicitly use \SEQ to indicate this. In a language like C++ (where everything is always in sequence), you don't need to make this distinction.
+	\item[Infinite loops.] It is common in \occam programs to have the idiom \WHILETRUE. We will often write infinite loops, because \occam programs are made up of lots of processes that communicate with each-other, and they typically run forever.
+\end{description}
+
+These are just a few of the differences you'll notice. A lot of what you've learned about programming will be challenged by \occam, because it really does let you express ideas about code that is to be executed \emph{in parallel}. We think that's kind a neat.
+
+\makingthingsbreak
+
+\begin{itemize}
+	\item Take the colon off the \VALINT declaration. 
+	\item Break the indentation in one or more places by adding or removing a space.
+	\item Change the value of the constant {\constant led.pin} to something big, like {\constant 42}.
+	\item Change the value of the constant {\constant 1000} to something really big, like {\constant 64000}.
+\end{itemize}
+
+\seealso
+
+\XXX
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Using Different Types of Data}
+
+\problem
+You're used to using different types of data in other languages, so what can you use in \occam?
+
+
+\solution
+\occam is a programming language, and it has a full range of data types. You will often find yourself using integers (\INT), but there are a few others you might want to know about.
+
+
+	\begin{tabular}{l|c|c|p{1in}}
+		\hline
+		Type & Min & Max & Useage \\
+		\hline
+		\SIGNALT & & & A signal; no value. \\
+		\BOOL & FALSE & TRUE & Logical truth. \\
+		\BYTE & 0 & 255 & Single-byte values (small integers). \\
+		\INT & -32768 & 32767 & Positive and negative integer values. \\
+		\INTTT &  -2147483648 & 2147483647 & Big integers. \\
+		\REALTT & ... & ... & Floating-point values. \\
+		\hline
+	\end{tabular}
+
+\discussion
+In most of your programs, you will find yourself using data of type \SIGNALT, \BOOL, \BYTE, and \INT. For example, if you are reading from the analog to digital converter, you will get back an \INT, and if you are using a PWM \PROC (to fade an LED or drive a servo), you will probably be sending it a \BYTE. 
+
+You can use the larger types (the \INTTT and \REALTT types), but these are going to be very, very slow and memory intensive in Plumbing programs. Try, whenever possible, to avoid using them in your sketches. Usually, if you're clever, you can think of a way to solve your problem using only \INT values and not (say) floating-point \REALTT.
+
+\seealso
+
+\XXX
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\problem
+
+\solution
+
+\discussion
+
+\makingthingsbreak
+
+\seealso
+
+\XXX
