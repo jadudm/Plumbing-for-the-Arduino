@@ -7,7 +7,7 @@ Some of what you see here will be ``jumping ahead;'' that is, this chapter cover
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Structuring an \occam Program for the Arduino}
+\section{Structuring an \occam Program for the Arduino\label{structuring-for-arduino}}
 
 \problem
 You are new to programming the Arduino and need a template to get started.
@@ -86,6 +86,17 @@ In most of your programs, you will find yourself using data of type \SIGNALT, \B
 
 You can use the larger types (the \INTTT and \REALTT types), but these are going to be very, very slow and memory intensive in Plumbing programs. Try, whenever possible, to avoid using them in your sketches. Usually, if you're clever, you can think of a way to solve your problem using only \INT values and not (say) floating-point \REALTT.
 
+Note that we can define new data types in \occam, and we often do so when it makes sense. For example, if we want to capture the $x$ and $y$ position of a joystick, we might write code like
+
+\begin{lstlisting}
+DATA TYPE POSITION
+  INT x:
+  INT y:
+:
+\end{lstlisting}
+
+This way, we can create a \emph{record} that contains both values, and use that throughout our program (instead of two separate values). You can read more about {\RECORD}s in \FIXME.
+
 \seealso
 
 \XXX
@@ -94,6 +105,248 @@ You can use the larger types (the \INTTT and \REALTT types), but these are going
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\section{Working with Constant Arrays}
+\problem
+You want to create an array of data so you can reference it using an index (either in a replicated construct or as part of a lookup table). 
+
+\solution
+\occam has arrays just like any other language; they come in two flavors: constant and mutable. A constant array can be used to easily package up a group of values to be referenced in a simple and direct manner.
+
+\begin{lstlisting}
+#INCLUDE "plumbing.module"
+
+VAL []INT pins IS [10, 11, 12, 13]:
+
+PROC main ()
+  PAR i = 0 FOR 4
+    blink (pins[i], 100 * (i + 1))
+:
+\end{lstlisting}
+
+In this example, we declare a constant array of {\INT}s. We know it is a constant array because 1) it is at the ``top level'' (meaning it is not in a \PROC), and 2) because the line of code begins with the keyword \VAL. Note that unlike C++, the array subscript comes before the type (eg. {\code []\INT}) when you are declaring the array.
+
+On line 7, we see how the array is referenced; it is called {\code pins}, and we want the {\code i}$^{th}$ element of the array. On line 6, we see something that is unique to \occam: we don't just have loops so much as \emph{replicators}. Here, we say that we want to replicate the \PAR four times, which makes the above code the same as writing
+
+\begin{lstlisting}
+#INCLUDE "plumbing.module"
+
+VAL []INT pins IS [10, 11, 12, 13]:
+
+PROC main ()
+  PAR
+    blink (pins[0], 100 * (0 + 1))
+    blink (pins[1], 100 * (1 + 1))
+    blink (pins[2], 100 * (2 + 1))
+    blink (pins[3], 100 * (3 + 1))
+:
+\end{lstlisting}
+
+This will blink four LED pins at four different rates.
+
+\discussion
+
+\occam constant arrays can be of any type; for example, we can have a constant array of \BOOL values, or \REALTT values. They are useful for data that does not change throughout your program. 
+
+You cannot change the values contained within a constant array. For that, you need to use an array that is declared locally within a \PROC. This is a safety feature of the language, as we will soon learn.
+
+\makingthingsbreak
+
+\begin{itemize}
+	\item Try removing the colon from the declaration of the array.
+	\item What happens if you forget the keyword \VAL?
+	\item What happens if you forget a comma when specifying the contents of the array?
+	\item What if you forget the brackets on the {\code []\INT}?
+\end{itemize}
+
+\seealso
+
+\XXX
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Using Mutable Arrays}
+\problem
+You want to store some values in an array, and those values will change over time.
+
+\solution
+You can't use a constant array for values that change over time; instead, you need to declare an array within a \PROC, so that it is \emph{mutable}, meaning ``able to be changed.''
+
+\begin{lstlisting}
+#INCLUDE "plumbing.module"
+
+PROC main ()
+  [6]INT readings:
+  INT sum:
+  SEQ
+    SEQ i = 0 FOR (SIZE readings)
+      adc.base (A0, VCC, readings[i])
+    SEQ i = 0 FOR (SIZE readings)
+      sum := sum + readings[i]
+    serial.write.string (TX0, "Sum of readings: ")
+    serial.write.int (TX0, sum)
+:
+\end{lstlisting}
+
+\discussion
+On line 4, we declare an array of size 6 called {\code readings}. In \occam programs, you will always need to declare how large an array is, and you can never change the size of the array after it is declared. Note that if you try and read from an array before you write data into it, you are likely to crash your \occam program, and the compiler will warn you if you try and do this.
+
+On line 7, we see the equivalent of a {\code for} loop in \occam: it is called a \emph{replicated \SEQ}. Instead of writing 
+
+\begin{lstlisting}
+  SEQ i = 0 FOR 6
+\end{lstlisting}
+
+we instead wrote 
+
+\begin{lstlisting}
+  SEQ i = 0 FOR (SIZE readings)
+\end{lstlisting}
+
+which makes sure we don't loop too many times and walk off the end of the array. Also, it means that if we change the size of the array later, then our code will still work.
+
+\makingthingsbreak
+\begin{itemize}
+	\item What happens if you replace {\code (SIZE readings}) with {\constant 7}?
+	\item What happens if you forget the {\code [i]} on either line 8 or line 10?
+	\item What happens if you forget the {\code TX0} when printing data back to your PC?
+\end{itemize}
+
+\seealso
+
+\XXX
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Displaying Messages}
+\problem
+You want to tell a story from your Arduino, so you need to be able to print things back to your PC.
+
+\solution
+\occam has some really awful string handling. And, let us be honest with each-other: you're programming an embedded system, not the next great text adventure. Why are you trying to print so much?
+
+When you are working with ``strings'' in \occam, the truth is you're just working with arrays of \BYTE values. And, because \occam was designed for embedded systems, it doesn't casually do things like ``add two strings together.'' If you are accustomed to working with the Arduino in C++, you may be in for some rude surprises with \occam. 
+
+That said, we can do some basic things. We can print a message back to the serial port (which is typically connected to our PC):
+
+\begin{lstlisting}
+serial.write.string (TX0, "Hello*n")
+\end{lstlisting}
+
+The {\code *n} is how we indicate a newline in a string. 
+
+We can print an integer to the serial port:
+
+\begin{lstlisting}
+serial.write.int (TX0, 42)
+\end{lstlisting}
+
+We can write a single byte:
+
+\begin{lstlisting}
+serial.write.byte (TX0, 'A')
+\end{lstlisting}
+
+And we can send a newline all by itself to the serial port:
+
+\begin{lstlisting}
+serial.write.newline (TX0)
+\end{lstlisting}
+
+\discussion
+Back in our day, programmers didn't need strings---they would read and write their data and programs in straight binary, and they \emph{liked it}.
+
+Humor aside, we get on just fine with this level of serial functionality. If you want to do more, and it isn't currently part of the Plumbing libraries, we recommend you join the users mailing list ({\code users@concurrency.cc}) and ask for help with what you are trying to accomplish. The \occam gurus who hang out there will do their best to help you achieve your goals.
+
+\makingthingsbreak
+
+\XXX
+
+\seealso
+
+\XXX
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Structuring your Code with {\PROC}s}
+\problem
+Your code is getting a bit long, and you'd like to break it into smaller parts so you can make sense of it.
+
+\solution
+If you look back at Section~\vref{structuring-for-arduino}, we see the following program:
+
+\lstinputlisting[caption=A program waiting to be simplified.,label=code:arduinoish2]{code/ch1-arduinoish2.occ}
+
+The program has a \SEQ, which says to first set the direction of pin \pinthirteen to \OUTPUT, and then we fall into an infinite loop. Wouldn't it be nice if the code in the infinite loop was in a separate \PROC?
+
+After a bit of editing, we might end up with the following program:
+
+\begin{lstlisting}
+#INCLUDE "plumbing.module"
+
+VAL INT led.pin IS 13:
+
+PROC blink.loop ()
+  WHILE TRUE
+    SEQ
+      digital.write (led.pin, HIGH)
+      delay (1000)
+      digital.write (led.pin, LOW)
+      delay (1000)
+:
+
+PROC main ()
+  SEQ
+    digital.mode (led.pin, OUTPUT)
+    blink.loop ()
+:
+\end{lstlisting}
+
+We could take this one step further, and make it so we can easily change the amount of time that the LED is on or off:
+
+\begin{lstlisting}
+#INCLUDE "plumbing.module"
+
+VAL INT led.pin IS 13:
+
+PROC blink.loop (VAL INT delay.time)
+  WHILE TRUE
+    SEQ
+      digital.write (led.pin, HIGH)
+      delay (delay.time)
+      digital.write (led.pin, LOW)
+      delay (delay.time)
+:
+
+PROC main ()
+  SEQ
+    digital.mode (led.pin, OUTPUT)
+    blink.loop (1000)
+:
+\end{lstlisting}
+
+\discussion
+In C++, you write functions to organize your code into small, manageable pieces. (This is also how we often reuse parts of our code.) In \occam, we typically use the \PROC for the same purpose. A \PROC allows us to gather up one or more lines of code and give those lines of code a name. In this case, we took the infinite loop that was blinking pin \pinthirteen, and put it in a \PROC that we could reference by name.
+
+The second change we made was to add a parameter to the \PROC. This way, when we use the \PROC, we can choose how long to leave the LED on and off at the time of usage, instead of it being ``hard coded'' into the \PROC {\code blink.loop}. This also illustrates an interesting thing about \occam parameters: if we want to pass a constant value (that cannot be changed), we say \VAL. So, in the parameters to {\code blink.loop} we have one parameter of type \VAL \INT, which means that we are passing a constant of some sort to {\code blink.loop}.
+
+\makingthingsbreak
+\begin{itemize}
+	\item Try eliminating the keyword \VAL in the \PROC header for {\code blink.loop}.
+\end{itemize}
+
+\seealso
+
+\XXX
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{}
 \problem
 
 \solution
